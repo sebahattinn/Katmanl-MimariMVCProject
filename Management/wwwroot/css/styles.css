@@ -1,36 +1,149 @@
-﻿/* Footer */
-footer {
-    background-color: #343a40; /* Koyu footer */
+﻿/* Navbar */
+.navbar {
+    background-color: #2c3e50; /* Koyu lacivert arka plan */
     color: white;
-    padding: 1px;
+    padding: 10px 20px; /* Üst ve alt padding */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+    position: fixed; /* Sabit navbar */
+    top: 0;
+    width: 100%;
+    z-index: 999; /* Navbar'ı üstte tutmak için */
+    background-image: linear-gradient(45deg, #6a5acd, #00bcd4); /* Mavi-lila geçişi */
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite; /* Yavaşça değişen renkler */
+}
+
+/* Navbar Linkleri */
+.navbar-nav .nav-item .nav-link {
+    color: #6893be; /* Altın sarısı renkli yazılar */
+    font-weight: bold; /* Bağlantılara kalın yazı tipi */
+    text-transform: uppercase; /* Büyük harf kullanımı */
+    transition: color 0.3s ease; /* Renk geçiş animasyonu */
+}
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #e74c3c; /* Hoverda kırmızı renk */
+        text-decoration: underline; /* Alt çizgi ekle */
+    }
+
+/* Navbar Toggler (Mobildeki açılır menü butonu) */
+.navbar-toggler {
+    border-color: #f39c12; /* Toggler butonunun kenar rengi */
+}
+
+.navbar-toggler-icon {
+    background-color: #f39c12; /* Toggler simgesinin rengi */
+}
+
+/* Navbar Arka Plan Rengi Değişimi Animasyonu */
+@keyframes gradientShift {
+    0% {
+        background-position: 200% 0%;
+    }
+
+    50% {
+        background-position: 0% 100%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50; /* Koyu lacivert arka plan */
+    color: white;
+    padding: 20px;
     text-align: center;
     position: fixed; /* Sabit hale getir */
     bottom: 0; /* Alt kısmı sabitle */
     width: 100%;
-    font-size: 15px;
+    font-size: 16px; /* Daha büyük yazı boyutu */
     z-index: 1000; /* Üstte görünmesini sağlamak için */
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2); /* Hafif gölge ekleyerek derinlik */
+    background-image: linear-gradient(45deg, #6a5acd, #00bcd4); /* Mavi-lila geçişi */
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite; /* Yavaşça değişen renkler */
 }
 
-    /* Gizlilik Sözleşmesi */
-    footer .privacy-policy {
-        font-size: 12px; /* Küçük font */
-        margin-top: 5px; /* Üstten biraz boşluk */
-        display: block; /* Block yaparak alt satıra al */
+/* Footer Arka Plan Rengi Değişimi Animasyonu */
+@keyframes gradientShift {
+    0% {
+        background-position: 200% 0%;
     }
 
-        footer .privacy-policy a {
-            color: #f0ad4e; /* Bağlantı rengi */
-            text-decoration: none; /* Alt çizgi yok */
-        }
+    50% {
+        background-position: 0% 100%;
+    }
 
-            footer .privacy-policy a:hover {
-                color: #007bff; /* Hover rengi */
-            }
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+/* Gizlilik Sözleşmesi */
+footer .privacy-policy {
+    font-size: 14px; /* Küçük font */
+    margin-top: 10px; /* Üstten biraz boşluk */
+    display: block; /* Block yaparak alt satıra al */
+}
+
+    footer .privacy-policy a {
+        color: #f39c12; /* Altın sarısı bağlantı rengi */
+        text-decoration: none; /* Alt çizgi yok */
+        font-weight: bold; /* Bağlantıya kalınlık ekle */
+    }
+
+        footer .privacy-policy a:hover {
+            color: #e74c3c; /* Hoverda kırmızı renk */
+            text-decoration: underline; /* Hoverda alt çizgi ekle */
+        }
 
 /* Sayfa Düzeni */
 .container {
     max-width: 1200px; /* Sayfa genişliği */
     margin: 0 auto;
     padding: 20px;
-    padding-bottom: 20px; /* Footer'a yer bırakmak için alt padding */
+    padding-bottom: 40px; /* Footer'a yer bırakmak için alt padding */
+}
+
+/* Daha Fazla Stil - Footer Linkleri */
+footer a {
+    color: #f39c12; /* Genel link rengi */
+    font-size: 14px;
+    text-decoration: none;
+}
+
+    footer a:hover {
+        color: #e74c3c; /* Link hover rengi */
+        text-decoration: underline;
+    }
+
+/* Mobile Uyumlu Navbar */
+@media (max-width: 768px) {
+    .navbar {
+        font-size: 14px; /* Mobilde daha küçük yazı */
+        padding: 10px 15px; /* Mobilde daha küçük padding */
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 16px; /* Mobilde daha küçük font */
+    }
+
+    .navbar-toggler-icon {
+        background-color: #f39c12; /* Toggler simgesinin rengi mobilde */
+    }
+}
+
+/* Mobile Uyumlu Footer */
+@media (max-width: 768px) {
+    footer {
+        font-size: 14px; /* Mobilde daha küçük yazı */
+        padding: 15px; /* Mobilde daha küçük padding */
+    }
+
+        footer .privacy-policy {
+            font-size: 12px; /* Küçük cihazlarda daha küçük font */
+        }
 }

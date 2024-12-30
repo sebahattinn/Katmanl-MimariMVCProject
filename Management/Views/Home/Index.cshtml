@@ -3,7 +3,7 @@
 }
 
 <!-- Ana Sayfa Başlığı -->
-<h1 class="text-center my-5">OnlineGallery'ye Hoş Geldiniz!</h1>
+<h1 class="text-center my-5">Sebonun Websiteye Hoş Geldiniz!</h1>
 
 <!-- TempData'dan gelen mesajı gösterme -->
 @if (TempData["SuccessMessage"] != null)
@@ -34,9 +34,24 @@
         @foreach (var artwork in Model)
         {
             <div class="col-md-4">
-                <div class="artwork-item mb-4 p-3 border rounded shadow-sm">
+                <div class="artwork-item mb-4 p-3 border rounded shadow-sm text-center">
+                    <!-- Görsel -->
+                    @if (!string.IsNullOrEmpty(artwork.ImageUrl))
+                    {
+                        <img src="@artwork.ImageUrl" alt="@artwork.Title" class="img-fluid mb-3" style="max-height: 200px;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">Görsel bulunamadı.</p>
+                    }
+
+                    <!-- Başlık -->
                     <h3>@artwork.Title</h3>
+
+                    <!-- Açıklama -->
                     <p>@artwork.Description</p>
+
+                    <!-- Fiyat -->
                     <p><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
                 </div>
             </div>

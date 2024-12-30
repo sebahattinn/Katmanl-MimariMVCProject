@@ -4,11 +4,11 @@
     @foreach (var artwork in Model)
     {
         <div class="artwork-item">
-            <!-- Resim yolunu doğru şekilde kullanın -->
-            <img src="~/images/@artwork.ImageUrl" alt="@artwork.Title" />
+            <!-- Use Url.Content to generate the correct URL for the image -->
+            <img src="@Url.Content("~/Images/" + artwork.ImageUrl)" alt="@artwork.Title" class="img-fluid mb-3" style="max-height: 200px;" />
             <h3>@artwork.Title</h3>
             <p>@artwork.Description</p>
-            <p><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
+            <p><strong>Price:</strong> @string.Format("{0:C}", artwork.Price)</p>
         </div>
     }
 </div>

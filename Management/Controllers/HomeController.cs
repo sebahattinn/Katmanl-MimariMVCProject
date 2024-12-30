@@ -34,5 +34,26 @@ namespace OnlineGallery.Controllers
             // Partial view'a veriyi gönderiyoruz
             return PartialView("_ArtworkList", artworks);
         }
+        //burdan sonrasý eklendi
+        public IActionResult Blog()
+        {
+            return View("Blog");
+        }
+
+        public IActionResult WhyUs()
+        {
+            return View("WhyUs");
+        }
+
+        public IActionResult About()
+        {
+            return View("About");
+        }
+
+        public IActionResult Contact()
+        {
+            return View("Contact");
+        }
+        //Buraya Kadar
     }
 }

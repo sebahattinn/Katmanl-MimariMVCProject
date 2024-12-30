@@ -10,55 +10,90 @@
     <title>@ViewData["Title"] - OnlineGallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/styles.css" rel="stylesheet" /> <!-- Kendi CSS dosyanı ekledik -->
+    <style>
+        /* Logoyu sol üst köşeye sabitleme */
+        .logo-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        /* Sağ üst köşedeki butonlar */
+        .auth-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Navbar ayarları */
+        .navbar {
+            margin-top: 130px; /* Navbar'ı logonun altına kaydırmak için */
+        }
+    </style>
 </head>
 <body>
+    <!-- Logo Bölümü -->
+    <div class="logo-container">
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+            <img src="~/images/logo.png" alt="OnlineGallery" class="img-fluid" style="max-height: 150px;">
+        </a>
+    </div>
+
+    <!-- Sağ Üst Köşe için Butonlar (Giriş Yap ve Kayıt Ol) -->
+    <div class="auth-buttons">
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a class="btn btn-outline-primary me-2" href="@Url.Action("Login", "Account")">Giriş Yap</a>
+            <a class="btn btn-outline-success" href="@Url.Action("Register", "Account")">Kayıt Ol</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-danger" href="@Url.Action("Logout", "Account")">Çıkış Yap</a>
+        }
+    </div>
+    <!-- Navbar Bölümü -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">OnlineGallery</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Index", "Home")">Ana Sayfa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("Gallery", "Artworks")">Galeri</a>
                     </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Dashboard", "Admin")">Yönetim Paneli</a>
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Logout", "Account")">Çıkış Yap</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Login", "Account")">Giriş Yap</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Register", "Account")">Kayıt Ol</a>
-                        </li>
-                    }
+                    <!-- Yeni Menü Öğeleri -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Blog", "Home")">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("WhyUs", "Home")">Neden Biz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("About", "Home")">Hakkımızda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Contact", "Home")">İletişim</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+
+    <!-- Sayfa İçeriği -->
     <div class="container mt-4">
         @RenderBody()
     </div>
 
-    <footer class="bg-dark text-center text-white">
+    <!-- Footer Bölümü -->
+    <footer class="bg-dark text-center text-white mt-4" style="position: relative; bottom: 0; width: 100%; padding: 10px 0;">
         <p>&copy; 2024 OnlineGallery. Tüm Hakları Saklıdır.</p>
     </footer>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

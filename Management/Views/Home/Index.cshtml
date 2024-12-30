@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<!-- Ana Sayfa Başlığı -->
+<h1 class="text-center my-5">OnlineGallery'ye Hoş Geldiniz!</h1>
+
+<!-- TempData'dan gelen mesajı gösterme -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Giriş Yap veya Üye Ol Butonları -->
+<div class="text-center mb-4">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p class="lead">Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a></p>
+    }
+    else
+    {
+        <p class="lead">Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a></p>
+    }
+</div>
+
+<!-- Sanat eserlerini listeleme -->
+@model List<OnlineGallery.Models.Artwork>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var artwork in Model)
+        {
+            <div class="col-md-4">
+                <div class="artwork-item mb-4 p-3 border rounded shadow-sm">
+                    <h3>@artwork.Title</h3>
+                    <p>@artwork.Description</p>
+                    <p><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Gösterilecek sanat eseri bulunamadı.</p>
+}

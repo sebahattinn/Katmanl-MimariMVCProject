@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- TempData'dan gelen mesajı gösterme -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Status</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Admin", new { id = item.Id })" class="btn btn-warning btn-sm">Düzenle</a>
+                    <a href="@Url.Action("Delete", "Admin", new { id = item.Id })" class="btn btn-danger btn-sm">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

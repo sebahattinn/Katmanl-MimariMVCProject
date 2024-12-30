@@ -1,0 +1,36 @@
+﻿/* Footer */
+footer {
+    background-color: #343a40; /* Koyu footer */
+    color: white;
+    padding: 1px;
+    text-align: center;
+    position: fixed; /* Sabit hale getir */
+    bottom: 0; /* Alt kısmı sabitle */
+    width: 100%;
+    font-size: 15px;
+    z-index: 1000; /* Üstte görünmesini sağlamak için */
+}
+
+    /* Gizlilik Sözleşmesi */
+    footer .privacy-policy {
+        font-size: 12px; /* Küçük font */
+        margin-top: 5px; /* Üstten biraz boşluk */
+        display: block; /* Block yaparak alt satıra al */
+    }
+
+        footer .privacy-policy a {
+            color: #f0ad4e; /* Bağlantı rengi */
+            text-decoration: none; /* Alt çizgi yok */
+        }
+
+            footer .privacy-policy a:hover {
+                color: #007bff; /* Hover rengi */
+            }
+
+/* Sayfa Düzeni */
+.container {
+    max-width: 1200px; /* Sayfa genişliği */
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 20px; /* Footer'a yer bırakmak için alt padding */
+}

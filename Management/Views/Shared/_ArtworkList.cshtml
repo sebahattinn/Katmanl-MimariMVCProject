@@ -1,0 +1,14 @@
+﻿@model IEnumerable<OnlineGallery.Models.Artwork>
+
+<div class="artwork-list">
+    @foreach (var artwork in Model)
+    {
+        <div class="artwork-item">
+            <!-- Resim yolunu doğru şekilde kullanın -->
+            <img src="~/images/@artwork.ImageUrl" alt="@artwork.Title" />
+            <h3>@artwork.Title</h3>
+            <p>@artwork.Description</p>
+            <p><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
+        </div>
+    }
+</div>

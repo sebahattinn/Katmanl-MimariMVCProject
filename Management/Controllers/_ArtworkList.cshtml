@@ -1,0 +1,10 @@
+﻿@model IEnumerable<OnlineGallery.Models.Artwork>
+
+@foreach (var artwork in Model)
+{
+    <div class="artwork-item">
+        <img src="@artwork.ImageUrl" alt="@artwork.Title" />
+        <h3>@artwork.Title</h3>
+        <p>@artwork.Description</p>
+    </div>
+}

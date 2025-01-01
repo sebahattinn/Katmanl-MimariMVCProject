@@ -1,0 +1,35 @@
+﻿@model IEnumerable<OnlineGallery.Models.ApplicationUser>
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+            <th>Email</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a href="@Url.Action("EditUser", "Admin", new { userId = user.Id })" class="btn btn-primary">Düzenle</a>
+                    <a href="@Url.Action("DeleteUser", "Admin", new { userId = user.Id })" class="btn btn-danger">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

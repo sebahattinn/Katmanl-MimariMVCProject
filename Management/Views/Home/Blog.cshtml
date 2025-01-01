@@ -1,5 +1,198 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = ViewData["Title"] ?? "OnlineGallery"; // Varsayılan başlık
 }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Blog Yazılarımız</h1>
+
+        <!-- Blog Post 1 -->
+        <div class="blog-post">
+            <div class="post-title">5+1 NEDEN OnlineGallery?: GÜLCAN KARADAĞ 1</div>
+            <div class="post-meta">Yayınlanma Tarihi: 16 Temmuz 2024 / 14:44 | Yazar: GÜLCAN KARADAĞ</div>
+
+            <!-- Görsel -->
+            <img src="~/Images/blog1.png" alt="Blog Yazısı 1 Resmi" class="img-fluid mb-3" style="max-height: 400px; width: 100%;">
+
+            <!-- Özet -->
+            <div class="post-summary">
+                <p>
+                    5+1 NEDEN OnlineGallery?: GÜLCAN KARADAĞ
+                    <br><br>
+                    1) Neden sanat?
+                    Sanat, kendimi ifade etmenin ve dünyayı anlamanın en güçlü yollarından biri.
+                    Her bir eser, bir duygu, düşünce veya deneyimi aktarır.
+                    Sanat sayesinde hem kendi iç dünyama yolculuk yapıyor hem de izleyicilerle derin bir bağ kurabiliyorum.
+                    Bu paylaşım ve etkileşim, sanatın benim için vazgeçilmez olmasının başlıca nedenleri.
+                    <br><br>
+                    2) Sanatınızı 5 kelime ile nasıl tanımlarsınız?
+                    Duygusal, özgün, derin, etkileyici, zamansız.
+                    <br><br>
+                    3) Eserleriniz konuşsaydı izleyicisine ne söylerdi?
+                    Eserlerim izleyicilerine şöyle derdi: "Derinlere bak, hisset, ve kendi hikayeni keşfet."
+                    <br><br>
+                    4) Sanat yaşantınızda unutamadığınız bir anınız var mı?
+                    Evet, unutamadığım anılardan biri burada Artopol Sanat Galerisi'nde, Pınar Hanım'ın kişisel sergimin açılış günü bana sürpriz yaş günü organizasyonu yapması karşısında çok duygulanmıştım.
+                    Burada herkes ile kurduğum derin bağı, dostluğu hissetmek çok değerli ve motive edici.
+                    <br><br>
+                    5) Size garip gelen takıntılarınız var mı? Bu sanatınıza yansıyor mu?
+                    Evet, detaylara ve gizem yüklü olmasına takıntım var. Her şeyin kusursuz olmasını isterim.
+                    Bu titizlik, eserlerime de yansıyor; izleyicinin her seferinde yeni bir detay keşfetmesini sağlıyor.
+                    Bu, sanatımın derinliğini artırıyor ve izleyicilerle daha güçlü bir bağ kurmamı sağlıyor.
+                </p>
+            </div>
+
+            <!-- Devamını Oku Butonu -->
+            <a href="#" class="btn-read-more">Devamını Oku</a>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="blog-post">
+            <div class="post-title">Metaverse: Ecrin Avcı</div>
+            <div class="post-meta">Yayınlanma Tarihi : 08 Haziran 2022 / 10:56 | Yazar: Ecrin Avcı</div>
+
+            <!-- Görsel -->
+            <img src="~/Images/blog2.jpg" alt="Blog Yazısı 2 Resmi" class="img-fluid mb-3" style="max-height: 400px; width: 100%;">
+
+            <!-- Özet -->
+            <div class="post-summary">
+                <p>
+                    MetaVerse Nedir?
+                    <br><br>
+                    Metaverse, insanların herhangi bir çaba göstermeden, yalnızca kullanacakları sanal gerçeklik cihazları sayesinde, zihinsel olarak kendilerini orda bulunduklarını hissedecekleri sanal evrene verilen isimdir.
+                    İnsan zihnine bu yapay evrene dâhil olma imkânını sağlayan Metaverse;
+                    bilgisayarlar, android cihazlar ve 3D cihazlar sayesinde erişilebilir bir yapıya sahiptir.
+                    Neal Stephenson’ın 1992 yılında yayımladığı roman olan Snow Crash’de, bu kavram kurgusal bir dünyayı temsil etmek için kullanılmıştır. Bu zihinsel dünya, bir kamusal mekân oluşturma vaadi sunmaktadır.
+                    Para birimi ise kripto para piyasasında işlem görmektedir.
+                    Metaverse’te deneyimler ve yapılanların duraklama, sona erme ya da sıfırlanma gibi bir durumu söz konusu değildir.
+                    Oturum kapatıldığı takdirde her şey var olmaya devam eder.
+                    Gerçek dünyanın aksine her türlü topluluğa ev sahipliği yapmak mümkündür ve kullanıcılar tarafından aynı olay aynı anda deneyimlenebilir.
+                    Kendinizi ifade ettiğiniz avatarı ise dilediğinizce değiştirme ya da tasarlama imkânı sunulmuştur. 
+                    Bu bağlamda bakıldığında, Metaverse ile birlikte hem gerçek dünyadan hem de dijital dünyadan elde edilerek oluşturulmuş deneyimler sunulmaktadır. 
+                    Bu noktada, gelecekte önemli rolleri olacağı düşünülmektedir.
+
+                    Teknolojik açıdan geliştiği takdirde, insanların sanal gerçeklik cihazları sayesinde alışveriş yapma ya da sinemaya gitme gibi pek çok eylemi herhangi bir fiziksel çaba harcamadan gerçekleştirme fırsatına sahip olacağı öngörülmektedir.
+                    Ödeme sistemleri, kimlik doğrulama ve reklamlar açısından da büyük farklılıklara sebep olabileceği gündemde olan konulardan. Biz de Artopol ekibi olarak Metaverse konusunda çeşitli projeler yürüterek bu dijital dünyaya desteğimizi sağlamaktayız.
+                    <br><br>
+                    Neler Yapmak Mümkün?
+                    <br><br>
+                    Şu anda Metaverse’de insanlar, avatarları sayesinde kendilerini temsil edebilme, avatarları üzerinde değişiklikler yapabilme ve kendi aralarında birbirleri ile iletişim kurabilme olanaklarına sahip durumda.
+                    Bu sanal evrende, dijital para birimini kullanarak giysi ya da çeşitli oyun içi satın alımları yapabilmek mümkün.
+                    Mikrofon ve sohbet kutusu aracılığıyla sohbet edebilmek, sanat müzesine gitmek gibi çeşitli geziler yapabilmek ya da konsere gitmek gibi yapabileceğiniz çeşitli aktiviteler de bulunmakta.
+                    Ayrıca kullanıcıların kendilerine ait bir dijital arsa satın alarak bu arsayı dilediklerince doldurabilmesi, hatta alım satım yapması veya kiralayarak gelir elde etmesi de yapılabilecekler arasında.
+                    <br><br>
+                    Metaverse Arsa Nedir?
+                    <br><br>
+                    Metaverse, kullanıcıların bu dünya aracılığı ile sanal varlıklar oluşturmalarına olanak sağlayan ve oluşturulan bu varlıkların alınıp satılabilmesi için de farklı coinlerin kullanıldığı dijital bir dünya olarak ifade edilmektedir.
+                    Metaverse de üzerinde bulunduğumuz dünya gibi kara parçalarından oluşmaktadır.
+                    Bu kara parçaları, blok zincirinde NFT’ler olarak temsil edilir. 
+                    NFT’leri satın alan kişi, bu işlem sayesinde tam mülkiyet hakkını elde etmiş olur.
+                    Metaverse araziler, bu dijital dünyaya yapılabilecek en kârlı yatırım olarak görülmektedir.
+                    Zamanla değer kazanabilme imkânı bulabileceğiniz bu arazileri alıp satabilir ya da kiralayarak kazanç elde ederek bu yatırımlar sayesinde pasif bir gelir elde etmeniz de mümkün.
+                    Her Metaverse, sabit bir boyuta sahip belirlenmiş sınırlı sayıda araziden oluşur.
+                    Örneğin; Decentraland Metaverse 90.601 (16m x 16m) parselden oluşurken, Sandbox Metaverse ise 166.464 (96 x 96 adet) araziden oluşmakta. 
+                    Bu dijital arazileri; araç, bina, oyun ya da her türlü 3B nesne ekleyerek doldurabilirsiniz.
+                    Aynı zamanda bu varlıkları da diğer kullanıcılara kiralamanız mümkündür.
+                    <br><br>
+                    Metaverse ile Amaçlanan Ne?
+                    <br><br>
+                    Şu anda daha çok oyun teknolojileri için kullanılan metaverse hakkında, ilerleyen zamanlarda bireylerin daha çok sosyalleşebileceği bir evren yaratılması hedefleniyor.
+                    Bu yeni evrenin; sanal ve gerçek hayat arasında bir köprü kurarak, oyunlara gerçekçi bir deneyim sunması, çalışma ortamlarında büyük farklılıklar yaratması, sosyalleşme açısından alışılmışları tamamiyle değiştirmesi istenirken, sanal dünya ile gerçek dünyayı birleştirmek amaçlanıyor.
+                    Bu amaçlar doğrultusunda yürütülen hâli hazırda birçok proje bulunmakla birlikte, Artopol ekibi olarak biz de, Metaverse konusunda projeler yürüterek gelecekte büyük önem taşıyacağı öngörülen bu evrene katkı sağlamaktayız.
+                    <br><br>
+                    Metaverse Yatırımı Nasıl Yapılır?
+                    <br><br>
+                    Metaverse’ün internetin geleceği olduğunu düşünen ve sanal evrende varlık göstermek isteyen bireyler, başta Facebook olmak üzere çeşitli büyük şirketlerin de bu alana yatırım yapmasının ardından bu sanal evrene nasıl yatırım yapabileceklerini düşünmeye başladı. 
+                    Bu kişilerin öncelikle yapması gerekenlerden ilki bir Metaverse cüzdanı edinmek.
+                    Sonrasında detaylı bir araştırma sonucunda arsa almak istediğiniz şirkete karar vermelisiniz. 
+                    Seçtiğiniz şirket üzerinden coin aldıktan sonra, alacağınız arsa hakkında seçici olmanız son derece önem taşıyor. 
+                    Bu bağlamda yapmanız gereken ise; sizin için en kârlı ve en iyi arsayı seçmek. 
+                    Alacağınız arsaya karar verdikten sonra, araziye ilişkin adayı ve ardından parseli seçmelisiniz. 
+                    Son olarak daha öncesinde satın almış olduğunuz Metaverse coinler aracılığı ile araziyi satın aldığınızda yatırım işleminizi başarılı bir şekilde gerçekleştirmiş olacaksınız.
+                </p>
+            </div>
+
+            <!-- Devamını Oku Butonu -->
+            <a href="#" class="btn-read-more">Devamını Oku</a>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="blog-post">
+            <div class="post-title">Ressam Ömer Uluç Kimdir </div>
+            <div class="post-meta">Yayınlanma Tarihi: 09 Haziran 2022 / 14:51 | Yazar: Aybars Mete Keleş</div>
+
+            <!-- Görsel -->
+            <img src="~/Images/blog3.jpeg" alt="Blog Yazısı 3 Resmi" class="img-fluid mb-3" style="max-height: 400px; width: 100%;">
+
+            <!-- Özet -->
+            <div class="post-summary">
+                <p>
+                    Kısa Biyografi
+                    <br><br>
+                    Net bir tarih verilemese de Ömer Uluç, 1931 yılında doğmuş ve 2010 yılında ölmüş olan dünya çapında ünlü bir Türk ressamdır.
+                    Farklı ülkelerde açtığı 30'u aşkın sayıda kişisel sergiyle ve katıldığı organizasyonlarda sunduğu eserlerle yüzlerce insanı kendine hayran bıraktıran eserleri tüm dünyaya sunmuştur.
+                    Ürettiği kendine has eserleriyle Paris, Berlin ve İstanbul gibi dev şehirlerde sanatseverlerle buluşmuş ve eserleri sergilerde en gözde konuma gelmiştir.
+                    Şimdi Türk sanatına kattığı değerle önem kazanan sanatçımız Ömer Uluç'un hayatından kısaca bahsedelim.
+                    <br><br>
+                    Ömer Uluç’un Hayatı ve Eserleri
+                    <br><br>
+                    1953 yılında Robert Koleji'nden mezun olduktan sonra 1953 ile 1957 yılları arasında Amerika Birleşik Devletleri'nde mühendislik eğitimi görmüştür. Bu süreç Ömer Uluç için hayatının dönüm noktalarından biri olmuştur. 
+                    1953'te mühendislik eğitimiyle beraber Nuri İyem'in liderliğini yaptığı Tavanarası Ressamları grubuna katılmıştır.
+                    <br><br>
+                    Tavanarası Ressamları adlı oluşumda özellikle kendisi gibi akademiye karşı olan ve daha özgürlükçü bir tarz benimseyen Nuri İyem ile yollarının kesişmesi, bir dönüm noktası olur.
+                    Bilindiği üzere Atıf Yılmaz da Tavanarası Ressamları adlı gruptan çıkmıştır. İlk resimlerini büyük ölçüde bu oluşum içinde gerçekleştirir.
+                    Söz konusu kolektif yapı, onun kendini geliştirmesine olanak sağlar.
+                    <br><br>
+                    İlk resimlerini bu grupla yapan sanatçı, grubun da temsil ettiği akademi karşıtı bir resim anlayışına sahiptir. 
+                    İlk sergisini de bu süreçte 1955 yılında Boston'da açmıştır.
+                    1960'lı yıllarda resim ve fikirsel anlayışını kaynağa yöneltmeye başlamıştır. 
+                    Yani Ömer Uluç için önemli olan kaynaktan hayata dönmek olmuştur.
+                    1965 yılında bir yıllığına Londra ve Paris'te, 1972 ile 1973 yılları arasında ise ABD ve Meksika'da, 1973 ile 1977 yılları arasında ise Nijerya'da bulunmuştur.
+                    <br><br>
+                    Ressam Ömer Uluç, bir dönem Osmanlı çinilerine karşı özel bir ilgiye sahip olur.
+                    Osmanlı çinileri ve minyatürleri ile haşır neşir olmaya başlar ve bu ilgiyi eserlerine yansıtır.
+                    Mühendislik mesleğinden tamamen kopan sanatçı, artık hepten resme yönelmiştir. 
+                    Afrika'ya gidip gelmesiyle soyutla başlattığı sanat serüvenini figürle devam ettirmeye başlamıştır.
+                    Böylelikle ontolojik bir fark olmadığını düşünerek figüratif bir resmi kurmuştur.
+                    Karga, ada ve arma gibi öğeler kullanarak daha yoğun titreşimler içeren resimlere geçecek ve böylelikle formdan uzaklaşıp figürü bulacaktır.
+                    Sanatçı 1980'li yıllarda İran Irak Savaşı Tankı, Tanker ve Kuş ve Akademik Ahu gibi resimlerle çeşitli konuları da ele alacaktır.
+                    <br><br />
+                    Sanatçı kariyerinde çeşitli konuları ele almış ve hayatının her döneminde maceracı bir kimliğe sahip olmuştur.
+                    Ömrünün tamamını İstanbul Boğazı'nın teknelerini resmeden risksiz ressamların aksine Ömer Uluç, her resminde risk almak istemiştir.
+                    Bu da onun resim aşkıyla macera arayışını birleştirdiği nokta olmuştur.
+                    Doğanın ve hayatın farklı sahnelerini ve renklerini içeren onlarca resim yapan sanatçı, bu resimleri sergilerken de en az yaparken olduğu kadar heyecanlı olmuştur.
+                    <br><br>
+                    Ömer Uluç’un resminde en çok dikkat çeken detaylardan birisi de, kullandığı somut materyallerdir.
+                    Hortumlardan lastiklere, endüstriyel malzemelerden kıvrılabilen materyallere kadar her türlü nesneden çeşitli figürler yaratabilme becerisine sahiptir.
+                    Son dönemlerde yaptığı pek çok sergide bu yaklaşımın izlerini bulmak mümkündür.
+                    İlk başlarda Kumbaracı Yokuşu’nda, daha sonraki dönemde ise Tünel tarafına yer alan atölyede söz konusu malzemelerden pek çok çalışma yürütmüştür.
+                    Kauçuk, polyester, fırınlanan yüzeyler, pleksi fonlar, paravanlar… Ona bir tuvalin soğukluğundan kaçma fırsatı sunan her türlü materyale kucak açmaktadır. 
+                    Yaşamı boyunca ona dayatılan kalıplar ve akademik ezberler ile daima kavgalıdır.
+                    <br><br>
+                    Ömer Uluç'un çok sayıda yurt dışı ve yurt içi sergisi bulunmaktadır. Kişiliğiyle heyecanı herkese yansıtmasının yanında eserleri de her sergisinde adeta bambaşka ve heyecanlıdır. Bunun kaynağı aslında gezdiği ülkeler ve kıtalardır. Her yeni mekan onun için bambaşka bir heyecan ve ilham kaynağı olmuştur.
+
+                    2005 yılında Baki'den alıntılar da içeren kendi ses kayıtlarıyla oluşturduğu fragmanlarla başlayan ve her sayfasını bir sergi gibi düşündüğü kitabının Yapı Kredi yayınları ile bastırmıştır. Tasarım ve fikir olarak oldukça özgün olan bu kitap, sanatçının üretkenliğini bize yansıtmaktadır.
+
+                    Akciğer kanseri tedavisi nedeniyle yaklaşık 2 sene kadar çok zorlu bir dönem geçirmiştir. 
+                    Fakat bu dönemde bile sanatından bir an olsun ayrı yaşamak istememiştir.
+                    Hatta öyle ki kemoterapi esnasında sağ kolundan ilaç alırken bile sağ eli boş durmaz ve resim yapmayı sürdürür.
+                    Sanatçı kemoterapi gördüğü süreçte de sergiler oluşturmaya devam eder.
+                    Tedavisinin büyük bir bölümünü İstanbul Cerrahi Hastanesi’nde sürdürür.
+                    Son günlerini İstanbul'da geçiren ve Lucretius'un Ölümün olduğu yerde ben yokum,
+                    benim olduğum yerde ölüm yok sözlerini hatırlatan Ömer Uluç, Parçalanmanın Kimyası isimli son sergisinde karakalem otoportresini sergiler.
+                
+                </p>
+            </div>
+
+            <!-- Devamını Oku Butonu -->
+            <a href="#" class="btn-read-more">Devamını Oku</a>
+        </div>
+
+</body>
+</html>

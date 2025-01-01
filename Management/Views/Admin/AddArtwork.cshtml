@@ -1,0 +1,42 @@
+﻿@model OnlineGallery.Models.Artwork
+
+<h2>Sanat Eseri Ekle</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="AddArtwork" method="post">
+    <div class="form-group">
+        <label for="Title">Başlık</label>
+        <input type="text" id="Title" name="Title" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Price">Fiyat</label>
+        <input type="number" id="Price" name="Price" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="CategoryId">Kategori</label>
+        <select id="CategoryId" name="CategoryId" class="form-control">
+            <option value="">Kategori Seç</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>

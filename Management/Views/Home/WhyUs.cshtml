@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = ViewData["Title"] ?? "OnlineGallery"; // Varsayılan başlık
 }
+
+<!-- CSS dosyanızı burada çağırabilirsiniz -->
+<link rel="stylesheet" href="~/css/styles.css">
+
+<section class="about-us">
+    <div class="container">
+        <h1 class="section-title">Neden Biz?</h1>
+        <p class="section-subtitle">
+            Bizi tercih etmeniz için birçok neden var! Müşterilerimize sunduğumuz hizmetlerde kalite, güven ve memnuniyet önceliğimizdir.
+        </p>
+
+        <div class="reasons-list">
+            <div class="reason">
+                <h2>🔍 Güvenilirlik</h2>
+                <p>
+                    Uzun yıllardır sektörde yer alan deneyimli ekibimizle her zaman söz verdiğimiz hizmeti sunarız.
+                </p>
+            </div>
+            <div class="reason">
+                <h2>⚡ Hızlı Çözümler</h2>
+                <p>
+                    İhtiyaçlarınıza hızlı ve etkili çözümler sunarak zamanınızı önemsiyoruz.
+                </p>
+            </div>
+            <div class="reason">
+                <h2>📞 7/24 Destek</h2>
+                <p>
+                    Müşteri destek ekibimiz, karşılaşabileceğiniz her türlü sorun için 7/24 hizmetinizdedir.
+                </p>
+            </div>
+            <div class="reason">
+                <h2>🌟 Yüksek Kalite</h2>
+                <p>
+                    Hizmetlerimizde her zaman kaliteye öncelik veririz ve sürekli olarak gelişim hedefleriz.
+                </p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Bize Katılın!</h2>
+            <p>
+                Bizimle çalışarak projelerinizi bir üst seviyeye taşıyın. Daha fazla bilgi için iletişime geçin.
+            </p>
+            <a href="/iletisim" class="btn btn-primary">İletişim</a>
+        </div>
+    </div>
+</section>

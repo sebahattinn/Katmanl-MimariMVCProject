@@ -1,5 +1,80 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = ViewData["Title"] ?? "OnlineGallery"; // Varsayılan başlık
 }
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* Harita boyutunu ayarlıyoruz */
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Bize Ulaşın</h1>
+
+        <div class="row mt-5">
+            <!-- İletişim Formu -->
+            <div class="col-md-6">
+                <h3>İletişim Formu</h3>
+                <form action="/Home/SendContact" method="post">
+                    <div class="form-group">
+                        <label for="name">Adınız</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesajınız</label>
+                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gönder</button>
+                </form>
+            </div>
+
+            <!-- Harita -->
+            <div class="col-md-6">
+                <h3>Konumumuz</h3>
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3>İletişim Bilgilerimiz</h3>
+                <p><strong>Adres:</strong> İstiklal Caddesi No: 123, Beyoğlu, İstanbul, Türkiye</p>
+                <p><strong>Telefon:</strong> +90 555 123 45 67</p>
+                <p><strong>E-posta:</strong> info@ornekfirma.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap" async defer></script>
+
+    <!-- Sadece Contact sayfası için map.js dosyasını dahil ediyoruz -->
+    <script src="~/js/map.js"></script>
+
+    <!-- jQuery (Bootstrap için gerekli) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Popper.js -->
+    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js\"></script>")
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

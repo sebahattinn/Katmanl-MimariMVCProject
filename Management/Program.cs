@@ -1,15 +1,37 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineGallery.Data;
-// User ve Role modellerinizi içeren namespace
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using OnlineGallery.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Veritabaný baðlantýsý
 builder.Services.AddDbContext<GalleryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Identity (Kimlik doðrulama ve yönetimi) services
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<GalleryDbContext>()  // Kullanýcý veritabaný iþlemleri için GalleryDbContext kullanýyoruz
+    .AddDefaultTokenProviders();  // Token saðlayýcýlarý ekliyoruz
 
-// Add controllers with views
+// Authentication için Cookie yapýlandýrmasý
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Giriþ yapýlmadýðýnda yönlendirilmesi gereken sayfa
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz eriþim için sayfa
+    });
+
+// Authorization (Yetkilendirme) iþlemi
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin")); // Admin rolü gereksinimi
+});
+
+// MVC hizmetlerini ekleyin
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -26,9 +48,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); // Enable authentication
-app.UseAuthorization();  // Enable authorization
+// Authentication ve Authorization iþlemleri
+app.UseAuthentication();  // Kimlik doðrulama
+app.UseAuthorization();   // Yetkilendirme
 
+// Ana Controller yönlendirmesi
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

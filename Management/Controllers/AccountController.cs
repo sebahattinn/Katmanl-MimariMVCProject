@@ -25,12 +25,13 @@ public class AccountController : Controller
         if (ModelState.IsValid)
         {
             // Kullanıcıyı oluştur
-            var user = new User
+            var user = new ApplicationUser
             {
                 FullName = model.FullName,
                 Email = model.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password), // Şifreyi hashle
-                Role = model.Role
+                Role = model.Role,
+                UserName = model.Email // UserName property is required by Identity
             };
             // Kullanıcıyı veritabanına ekle
             _context.Users.Add(user);
@@ -67,7 +68,6 @@ public class AccountController : Controller
         }
         return View(model);
     }
-
 
     public IActionResult Logout()
     {

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<OnlineGallery.Models.User>
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- TempData'dan gelen mesajı gösterme -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Kullanıcı listesi PartialView'ı -->
+<div id="user-list-container">
+    @Html.Partial("_UserList", Model)
+</div>
+
+<!-- Kullanıcı listesi yenileme butonu -->
+<button id="refresh-user-list" class="btn btn-primary">Kullanıcıları Yenile</button>
+
+<script>
+    // Kullanıcı listesi yenileme işlemi
+    document.getElementById('refresh-user-list').addEventListener('click', function () {
+        fetch('@Url.Action("GetUserList", "Admin")')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('user-list-container').innerHTML = data;
+            });
+    });
+</script>

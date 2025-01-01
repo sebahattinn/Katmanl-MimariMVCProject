@@ -4,13 +4,17 @@
     color: white;
     padding: 10px 20px; /* Üst ve alt padding */
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
-    position: fixed; /* Sabit navbar */
+    position: static; /* Sabit navbar */
     top: 0;
-    width: 100%;
+    left: 0; /* Soldan sabitle */
+    width: 100%; /* Tam genişlik */
     z-index: 999; /* Navbar'ı üstte tutmak için */
-    background-image: linear-gradient(45deg, #6a5acd, #00bcd4); /* Mavi-lila geçişi */
-    background-size: 200% 200%;
-    animation: gradientShift 6s ease infinite; /* Yavaşça değişen renkler */
+    margin-top: 0; /* Üstten boşluk bırakma */
+}
+
+/* Sayfanın geri kalanına navbar'ın altındaki alanı ayarlamak için padding-top ekleme */
+body {
+    margin-top: 70px; /* Navbar yüksekliği kadar boşluk bırak */
 }
 
 /* Navbar Linkleri */
@@ -35,21 +39,6 @@
     background-color: #f39c12; /* Toggler simgesinin rengi */
 }
 
-/* Navbar Arka Plan Rengi Değişimi Animasyonu */
-@keyframes gradientShift {
-    0% {
-        background-position: 200% 0%;
-    }
-
-    50% {
-        background-position: 0% 100%;
-    }
-
-    100% {
-        background-position: 200% 0%;
-    }
-}
-
 /* Footer */
 footer {
     background-color: #2c3e50; /* Koyu lacivert arka plan */
@@ -62,43 +51,26 @@ footer {
     font-size: 16px; /* Daha büyük yazı boyutu */
     z-index: 1000; /* Üstte görünmesini sağlamak için */
     box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2); /* Hafif gölge ekleyerek derinlik */
-    background-image: linear-gradient(45deg, #6a5acd, #00bcd4); /* Mavi-lila geçişi */
-    background-size: 200% 200%;
-    animation: gradientShift 6s ease infinite; /* Yavaşça değişen renkler */
+    background-image: none; /* Geçiş efekti kaldırıldı */
 }
 
-/* Footer Arka Plan Rengi Değişimi Animasyonu */
-@keyframes gradientShift {
-    0% {
-        background-position: 200% 0%;
+    /* Gizlilik Sözleşmesi */
+    footer .privacy-policy {
+        font-size: 14px; /* Küçük font */
+        margin-top: 10px; /* Üstten biraz boşluk */
+        display: block; /* Block yaparak alt satıra al */
     }
 
-    50% {
-        background-position: 0% 100%;
-    }
-
-    100% {
-        background-position: 200% 0%;
-    }
-}
-
-/* Gizlilik Sözleşmesi */
-footer .privacy-policy {
-    font-size: 14px; /* Küçük font */
-    margin-top: 10px; /* Üstten biraz boşluk */
-    display: block; /* Block yaparak alt satıra al */
-}
-
-    footer .privacy-policy a {
-        color: #f39c12; /* Altın sarısı bağlantı rengi */
-        text-decoration: none; /* Alt çizgi yok */
-        font-weight: bold; /* Bağlantıya kalınlık ekle */
-    }
-
-        footer .privacy-policy a:hover {
-            color: #e74c3c; /* Hoverda kırmızı renk */
-            text-decoration: underline; /* Hoverda alt çizgi ekle */
+        footer .privacy-policy a {
+            color: #f39c12; /* Altın sarısı bağlantı rengi */
+            text-decoration: none; /* Alt çizgi yok */
+            font-weight: bold; /* Bağlantıya kalınlık ekle */
         }
+
+            footer .privacy-policy a:hover {
+                color: #e74c3c; /* Hoverda kırmızı renk */
+                text-decoration: underline; /* Hoverda alt çizgi ekle */
+            }
 
 /* Sayfa Düzeni */
 .container {

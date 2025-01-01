@@ -1,0 +1,22 @@
+﻿@model OnlineGallery.Models.ApplicationUser
+
+<h2>Kullanıcıyı Düzenle</h2>
+
+<form asp-action="EditUser" method="post">
+    <div class="form-group">
+        <label for="FullName">Ad Soyad</label>
+        <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+    </div>
+
+    <div class="form-group">
+        <label for="UserName">Kullanıcı Adı</label>
+        <input type="text" class="form-control" id="UserName" name="UserName" value="@Model.UserName" required />
+    </div>
+
+    <button type="submit" class="btn btn-success">Kaydet</button>
+</form>

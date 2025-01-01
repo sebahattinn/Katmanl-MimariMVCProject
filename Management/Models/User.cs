@@ -7,7 +7,7 @@ public class User
     public string Email { get; set; }
     public string? Address { get; set; }
     public string PasswordHash { get; set; } // Şifre için Hash işlemi yapılacak
-    public string Role { get; set; } = "user"; // Kullanıcının rolü
+    public string Role { get; set; }  // Kullanıcının rolü  = "user"; vardı bunu kaldırdım
 
     // Navigation properties
     public ICollection<Sale> Sales { get; set; }

@@ -1,76 +1,94 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineGallery.Data;
 using OnlineGallery.Models;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace OnlineGallery.Controllers
+public class AdminController : Controller
 {
-    [Authorize(Roles = "Admin")] // Yalnızca "Admin" rolüne sahip kullanıcılar erişebilir
-    public class AdminController : Controller
+    private readonly GalleryDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public AdminController(GalleryDbContext context, UserManager<ApplicationUser> userManager)
     {
-        private readonly GalleryDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public AdminController(GalleryDbContext context, UserManager<ApplicationUser> userManager)
+    // Admin ana sayfası (Index sayfası)
+    public IActionResult Index()
+    {
+        return View();  // Admin sayfası görüntülenir
+    }
+
+    // Kullanıcıları Listele (Ana Sayfa)
+    public async Task<IActionResult> Users()
+    {
+        var users = await _userManager.Users.ToListAsync();  // Kullanıcıları veritabanından al
+        return View(users);  // Kullanıcıları ana sayfada görüntüle
+    }
+
+    // Kullanıcıyı Düzenle
+    public async Task<IActionResult> EditUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
         {
-            _context = context;
-            _userManager = userManager;
+            return NotFound();
         }
+        return View(user);
+    }
 
-        // Kullanıcıları Listele (Ana Sayfa)
-        public IActionResult Users()
+    [HttpPost]
+    public async Task<IActionResult> EditUser(ApplicationUser user)
+    {
+        if (ModelState.IsValid)
         {
-            var users = _userManager.Users.ToList();  // Kullanıcıları veritabanından al
-            return View(users);  // Kullanıcıları ana sayfada görüntüle
-        }
-
-        // Kullanıcıyı Düzenle
-        public async Task<IActionResult> EditUser(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            var existingUser = await _userManager.FindByIdAsync(user.Id);
+            if (existingUser != null)
             {
-                return NotFound();
-            }
-            return View(user);
-        }
+                existingUser.FullName = user.FullName;
+                existingUser.Email = user.Email;
+                existingUser.UserName = user.UserName;
 
-        [HttpPost]
-        public async Task<IActionResult> EditUser(ApplicationUser user)
-        {
-            if (ModelState.IsValid)
-            {
-                var existingUser = await _userManager.FindByIdAsync(user.Id);
-                if (existingUser != null)
+                // Diğer gerekli değişiklikler
+                var result = await _userManager.UpdateAsync(existingUser);
+                if (result.Succeeded)
                 {
-                    existingUser.FullName = user.FullName;
-                    existingUser.Email = user.Email;
-                    existingUser.UserName = user.UserName;
-
-                    // Diğer gerekli değişiklikler
-                    await _userManager.UpdateAsync(existingUser);
                     TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
                     return RedirectToAction("Users");
                 }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
-            return View(user);
         }
+        return View(user);
+    }
 
-        // Kullanıcıyı Sil
-        public async Task<IActionResult> DeleteUser(string userId)
+    // Kullanıcıyı Sil
+    public async Task<IActionResult> DeleteUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                TempData["SuccessMessage"] = "Kullanıcı başarıyla silindi!";
-            }
-            return RedirectToAction("Users");
+            return NotFound();
         }
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+        {
+            TempData["SuccessMessage"] = "Kullanıcı başarıyla silindi!";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Kullanıcı silinirken bir hata oluştu.";
+        }
+        return RedirectToAction("Users");
     }
 }

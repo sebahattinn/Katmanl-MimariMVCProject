@@ -12,11 +12,18 @@
 
 <!-- Kullanıcı listesi PartialView'ı -->
 <div id="user-list-container">
-    @Html.Partial("_UserList", Model)
+    @Html.Partial("UserList", Model)
+</div>
+
+<!-- Butonlar -->
+<div class="mt-3">
+    <button id="add-user" class="btn btn-success">Kullanıcı Ekle</button>
+    <button id="delete-user" class="btn btn-danger">Kullanıcı Sil</button>
+    <button id="edit-user" class="btn btn-warning">Kullanıcı Düzenle</button>
 </div>
 
 <!-- Kullanıcı listesi yenileme butonu -->
-<button id="refresh-user-list" class="btn btn-primary">Kullanıcıları Yenile</button>
+<button id="refresh-user-list" class="btn btn-primary mt-3">Kullanıcıları Yenile</button>
 
 <script>
     // Kullanıcı listesi yenileme işlemi
@@ -27,4 +34,23 @@
                 document.getElementById('user-list-container').innerHTML = data;
             });
     });
+
+        // Kullanıcı ekleme butonu
+        document.getElementById('add-user').addEventListener('click', function () {
+        alert('Kullanıcı Ekleme işlemi başlatılacaktır.');
+        });
+
+        // Kullanıcı silme butonu
+        document.getElementById('delete-user').addEventListener('click', function () {
+            // Silme işlemi için uygun bir işlemi başlat
+            // Örneğin bir modal açarak silme işlemi onayı alınabilir
+            alert('Kullanıcı silme işlemi başlatılacak!');
+        });
+
+        // Kullanıcı düzenleme butonu
+        document.getElementById('edit-user').addEventListener('click', function () {
+            // Düzenleme işlemi için uygun bir işlemi başlat
+            // Örneğin bir modal açarak kullanıcı seçilerek düzenleme yapılabilir
+            alert('Kullanıcı düzenleme işlemi başlatılacak!');
+        });
 </script>

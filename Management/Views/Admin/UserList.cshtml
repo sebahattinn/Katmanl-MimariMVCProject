@@ -9,27 +9,34 @@
     </div>
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.UserName)</th>
-            <th>@Html.DisplayNameFor(model => model.FullName)</th>
-            <th>Email</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@user.UserName</td>
-                <td>@user.FullName</td>
-                <td>@user.Email</td>
-                <td>
-                    <a href="@Url.Action("EditUser", "Admin", new { userId = user.Id })" class="btn btn-primary">Düzenle</a>
-                    <a href="@Url.Action("DeleteUser", "Admin", new { userId = user.Id })" class="btn btn-danger">Sil</a>
-                </td>
+                <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().FullName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Email)</th>
+                <th>İşlem</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user?.UserName</td>
+                    <td>@user?.FullName</td>
+                    <td>@user?.Email</td>
+                    <td>
+                        <a href="@Url.Action("EditUser", "Admin", new { userId = user?.Id })" class="btn btn-primary">Düzenle</a>
+                        <a href="@Url.Action("DeleteUser", "Admin", new { userId = user?.Id })" class="btn btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found.</p>
+}

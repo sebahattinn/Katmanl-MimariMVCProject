@@ -20,6 +20,7 @@
     <button id="add-user" class="btn btn-success">Kullanıcı Ekle</button>
     <button id="delete-user" class="btn btn-danger">Kullanıcı Sil</button>
     <button id="edit-user" class="btn btn-warning">Kullanıcı Düzenle</button>
+    <button id="load-user-list" class="btn btn-primary">Kullanıcıları Listele</button>
 </div>
 
 <!-- Kullanıcı listesi yenileme butonu -->
@@ -35,22 +36,27 @@
             });
     });
 
+        // Kullanıcıları listeleme butonu
+        document.getElementById('load-user-list').addEventListener('click', function () {
+            fetch('@Url.Action("GetUserList", "Admin")')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('user-list-container').innerHTML = data;
+                });
+        });
+
         // Kullanıcı ekleme butonu
         document.getElementById('add-user').addEventListener('click', function () {
-        alert('Kullanıcı Ekleme işlemi başlatılacaktır.');
+            alert('Kullanıcı Ekleme işlemi başlatılacaktır.');
         });
 
         // Kullanıcı silme butonu
         document.getElementById('delete-user').addEventListener('click', function () {
-            // Silme işlemi için uygun bir işlemi başlat
-            // Örneğin bir modal açarak silme işlemi onayı alınabilir
             alert('Kullanıcı silme işlemi başlatılacak!');
         });
 
         // Kullanıcı düzenleme butonu
         document.getElementById('edit-user').addEventListener('click', function () {
-            // Düzenleme işlemi için uygun bir işlemi başlat
-            // Örneğin bir modal açarak kullanıcı seçilerek düzenleme yapılabilir
             alert('Kullanıcı düzenleme işlemi başlatılacak!');
         });
 </script>

@@ -91,4 +91,11 @@ public class AdminController : Controller
         }
         return RedirectToAction("Users");
     }
+
+    // Kullanıcı listesini döndüren aksiyon
+    public async Task<IActionResult> GetUserList()
+    {
+        var users = await _userManager.Users.ToListAsync();  // Kullanıcıları al
+        return PartialView("UserList", users);  // PartialView döndür
+    }
 }

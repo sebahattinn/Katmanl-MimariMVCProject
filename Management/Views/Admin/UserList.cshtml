@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OnlineGallery.Models.ApplicationUser>
+﻿@model IEnumerable<OnlineGallery.Models.User>
 
 <h2>@ViewData["Title"]</h2>
 
@@ -14,23 +14,33 @@
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().UserId)</th>
                 <th>@Html.DisplayNameFor(model => model.First().FullName)</th>
                 <th>@Html.DisplayNameFor(model => model.First().Email)</th>
-                <th>İşlem</th>
+                <th>@Html.DisplayNameFor(model => model.First().Role)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ProfileImageUrl)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Address)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model)
             {
                 <tr>
-                    <td>@user?.UserName</td>
+                    <td>@user?.UserId</td>
                     <td>@user?.FullName</td>
                     <td>@user?.Email</td>
+                    <td>@user?.Role</td>
                     <td>
-                        <a href="@Url.Action("EditUser", "Admin", new { userId = user?.Id })" class="btn btn-primary">Düzenle</a>
-                        <a href="@Url.Action("DeleteUser", "Admin", new { userId = user?.Id })" class="btn btn-danger">Sil</a>
+                        @if (!string.IsNullOrEmpty(user?.ProfileImageUrl))
+                        {
+                            <img src="@user?.ProfileImageUrl" alt="Profile Image" style="width: 50px; height: 50px; border-radius: 50%;" />
+                        }
+                        else
+                        {
+                            <span>No image</span>
+                        }
                     </td>
+                    <td>@user?.Address</td>
                 </tr>
             }
         </tbody>

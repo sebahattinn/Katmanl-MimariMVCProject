@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineGallery.Data;
-using OnlineGallery.Models; // Artwork modelini kullanmak için eklenmeli
+using OnlineGallery.Models;
 using System.Linq;
 
 namespace OnlineGallery.Controllers
@@ -14,27 +14,27 @@ namespace OnlineGallery.Controllers
             _context = context;
         }
 
-        // Ana sayfa
+        // Main page
         public IActionResult Index()
         {
-            // Artworks verilerini veritabanýndan alýyoruz
+            // Fetch artworks from the database
             var artworks = _context.Artworks.ToList();
 
-            // Verileri View'a gönderiyoruz
+            // Send data to the view
             return View(artworks);
         }
 
-
-        // Artworks listesini partial view'da göstermek için action
+        // Action to show artworks list in a partial view
         public IActionResult GetArtworkList()
         {
-            // Artworks verilerini alýyoruz
+            // Fetch artworks
             var artworks = _context.Artworks.ToList();
 
-            // Partial view'a veriyi gönderiyoruz
+            // Send data to the partial view
             return PartialView("_ArtworkList", artworks);
         }
-        //burdan sonrasý eklendi
+
+        // Additional actions
         public IActionResult Blog()
         {
             return View("Blog");
@@ -54,6 +54,5 @@ namespace OnlineGallery.Controllers
         {
             return View("Contact");
         }
-        //Buraya Kadar
     }
 }

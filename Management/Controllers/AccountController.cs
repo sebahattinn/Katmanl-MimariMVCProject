@@ -1,24 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineGallery.Models;
 using OnlineGallery.Data;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;  // PasswordHasher sınıfı için gerekli
+using System.Threading.Tasks;
 
 public class AccountController : Controller
 {
     private readonly GalleryDbContext _context;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(GalleryDbContext context, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public AccountController(GalleryDbContext context)
     {
         _context = context;
-        _signInManager = signInManager;
-        _userManager = userManager;
     }
 
-    // Kullanıcı Kaydı
+    // User Registration
     [HttpGet]
     public IActionResult Register()
     {
@@ -30,27 +26,30 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Kullanıcıyı oluştur
-            var user = new ApplicationUser
+            // PasswordHasher sınıfını kullanarak şifreyi hash'liyoruz
+            var passwordHasher = new PasswordHasher<User>();
+
+            var user = new User
             {
                 FullName = model.FullName,
                 Email = model.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password), // Şifreyi hashle
-                Role = model.Role, // Rolü kaydet
-                UserName = model.Email // UserName property is required by Identity
+                Role = model.Role
             };
 
-            // Kullanıcıyı veritabanına ekle
+            // Şifreyi hash'leyip kaydediyoruz
+            user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
+
+            // Kullanıcıyı veritabanına ekliyoruz
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Kullanıcı kaydedildikten sonra giriş işlemi
+            TempData["SuccessMessage"] = "Registration successful! You can now log in.";
             return RedirectToAction("Login");
         }
         return View(model);
     }
 
-    // Kullanıcı Girişi
+    // User Login
     [HttpGet]
     public IActionResult Login()
     {
@@ -62,48 +61,40 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            // E-posta ile kullanıcıyı bul
-            var user = await _context.Users
-                                      .FirstOrDefaultAsync(u => u.Email == model.Email);
-
-            // Kullanıcı var mı, şifre doğru mu, rolü kontrol et
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user != null)
             {
-                // Şifre doğruysa
-                if (BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+                var passwordHasher = new PasswordHasher<User>();
+                var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+
+                if (result == PasswordVerificationResult.Success)
                 {
-                    // Kullanıcıyı doğruladıktan sonra rolüne göre yönlendir
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    if (user.Role == "admin")  // Admin rolüne sahipse Admin paneline yönlendir    /Buradaki A büyük diye çok acılar çektim
+                    // Giriş başarılı
+                    if (user.Role == "admin")
                     {
-                        return RedirectToAction("Index", "Admin");  // Admin paneline yönlendirme
+                        return RedirectToAction("Index", "Admin");
                     }
-
-                    // Diğer kullanıcılar için Home Index sayfasına yönlendir
-                    return RedirectToAction("Index", "Home");  // Ana sayfaya yönlendirme
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    // Şifre yanlış
-                    ModelState.AddModelError("", "Geçersiz şifre.");
+                    ModelState.AddModelError("", "Invalid password.");
                 }
             }
             else
             {
-                // Kullanıcı bulunamadı
-                ModelState.AddModelError("", "Kullanıcı bulunamadı.");
+                ModelState.AddModelError("", "User not found.");
             }
         }
 
         return View(model);
     }
 
-    // Çıkış işlemi
-    public async Task<IActionResult> Logout()
+    // User Logout
+    public IActionResult Logout()
     {
-        // Kullanıcıyı çıkış yaptır
-        await _signInManager.SignOutAsync();
+        // Perform logout manually
+        TempData["SuccessMessage"] = "Successfully logged out.";
         return RedirectToAction("Index", "Home");
     }
 }

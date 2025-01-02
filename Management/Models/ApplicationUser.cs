@@ -9,7 +9,7 @@ namespace OnlineGallery.Models  // Kendi Models namespace'inizle eşleştirin
         // Örnek: Kullanıcı adı, profil resmi vs.
 
         public string FullName { get; set; }  // Kullanıcının tam adı
-        public string Email { get; set; }  
-        public string Role { get; set; }
+        public string Email { get; set; }
+        public string Role { get; set; }         //burdan sonrasını ekledm
     }
 }

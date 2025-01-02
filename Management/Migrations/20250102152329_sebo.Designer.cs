@@ -12,8 +12,8 @@ using OnlineGallery.Data;
 namespace OnlineGallery.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    [Migration("20241230003609_roni")]
-    partial class roni
+    [Migration("20250102152329_sebo")]
+    partial class sebo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace OnlineGallery.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("OnlineGallery.Models.Artwork", b =>
@@ -88,7 +88,7 @@ namespace OnlineGallery.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Artworks");
+                    b.ToTable("Artworks", (string)null);
                 });
 
             modelBuilder.Entity("OnlineGallery.Models.Category", b =>
@@ -106,7 +106,7 @@ namespace OnlineGallery.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("OnlineGallery.Models.Sale", b =>
@@ -135,7 +135,7 @@ namespace OnlineGallery.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Sales");
+                    b.ToTable("Sales", (string)null);
                 });
 
             modelBuilder.Entity("OnlineGallery.Models.User", b =>
@@ -147,31 +147,29 @@ namespace OnlineGallery.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

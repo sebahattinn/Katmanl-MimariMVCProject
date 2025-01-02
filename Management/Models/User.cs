@@ -1,4 +1,6 @@
-﻿namespace OnlineGallery.Models;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace OnlineGallery.Models;
 
 public class User
 {
@@ -8,6 +10,11 @@ public class User
     public string? Address { get; set; }
     public string PasswordHash { get; set; } // Şifre için Hash işlemi yapılacak
     public string Role { get; set; }  // Kullanıcının rolü  = "user"; vardı bunu kaldırdım
+    public string? ProfileImageUrl { get; set; } = "default.jpg"; // Kullanıcının profil resmi
+
+
+
+
 
     // Navigation properties
     public ICollection<Sale> Sales { get; set; }

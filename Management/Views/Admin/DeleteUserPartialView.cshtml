@@ -1,0 +1,21 @@
+﻿@model OnlineGallery.Models.User
+
+<div class="container mt-4">
+    <h3>Kullanıcı Sil</h3>
+    <p>Bu kullanıcıyı silmek istediğinizden emin misiniz?</p>
+
+    <div class="mb-3">
+        <label class="form-label">Ad Soyad:</label>
+        <p>@Model.FullName</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email:</label>
+        <p>@Model.Email</p>
+    </div>
+
+    <form asp-action="DeleteUser" method="post">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

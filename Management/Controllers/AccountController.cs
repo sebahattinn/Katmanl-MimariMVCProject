@@ -2,8 +2,10 @@
 using OnlineGallery.Models;
 using OnlineGallery.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;  // PasswordHasher sınıfı için gerekli
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 public class AccountController : Controller
 {
@@ -26,7 +28,6 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            // PasswordHasher sınıfını kullanarak şifreyi hash'liyoruz
             var passwordHasher = new PasswordHasher<User>();
 
             var user = new User
@@ -36,10 +37,8 @@ public class AccountController : Controller
                 Role = model.Role
             };
 
-            // Şifreyi hash'leyip kaydediyoruz
             user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
 
-            // Kullanıcıyı veritabanına ekliyoruz
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -69,7 +68,21 @@ public class AccountController : Controller
 
                 if (result == PasswordVerificationResult.Success)
                 {
-                    // Giriş başarılı
+                    // Sign in the user
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Email),
+                        new Claim(ClaimTypes.Role, user.Role)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = model.RememberMe
+                    };
+
+                    await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
                     if (user.Role == "admin")
                     {
                         return RedirectToAction("Index", "Admin");
@@ -90,11 +103,10 @@ public class AccountController : Controller
         return View(model);
     }
 
-    // User Logout
-    public IActionResult Logout()
+    [HttpPost]
+    public async Task<IActionResult> Logout()
     {
-        // Perform logout manually
-        TempData["SuccessMessage"] = "Successfully logged out.";
-        return RedirectToAction("Index", "Home");
+        await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+        return RedirectToAction("Login", "Account");
     }
 }

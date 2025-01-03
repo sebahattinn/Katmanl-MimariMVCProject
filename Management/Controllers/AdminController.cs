@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineGallery.Data;
 using OnlineGallery.Models;
@@ -33,10 +34,7 @@ public class AdminController : Controller
 
     public async Task<IActionResult> EditUser(int? userId)
     {
-        // Kullanıcı var mı kontrol et, yoksa yeni bir kullanıcı nesnesi oluştur
         var user = userId.HasValue ? await _context.Users.FindAsync(userId.Value) : new User();
-
-        // EditUserPartialView görümünü döndür
         return PartialView("EditUserPartialView", user);
     }
 
@@ -45,7 +43,6 @@ public class AdminController : Controller
     {
         if (!ModelState.IsValid)
         {
-            // Geçersizlik durumunda hata mesajlarını döndür
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
             {
                 Console.WriteLine(error.ErrorMessage);
@@ -59,24 +56,26 @@ public class AdminController : Controller
         {
             if (user.UserId == 0)
             {
-                // Yeni kullanıcı ekliyoruz
-                user.ProfileImageUrl ??= "default-image-url.jpg"; // Varsayılan resim yolunu kontrol et
+                user.ProfileImageUrl ??= "default-image-url.jpg";
+                var passwordHasher = new PasswordHasher<User>();
+                user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
                 _context.Users.Add(user);
                 TempData["SuccessMessage"] = "Yeni kullanıcı başarıyla eklendi!";
             }
             else
             {
-                // Kullanıcıyı güncelliyoruz
                 var existingUser = await _context.Users.FindAsync(user.UserId);
 
                 if (existingUser != null)
                 {
-                    // Kullanıcı bilgilerini güncelle
                     existingUser.FullName = user.FullName;
                     existingUser.Email = user.Email;
-                    existingUser.Address = user.Address; // Adres alanını güncelle
+                    existingUser.Address = user.Address;
                     existingUser.Role = user.Role;
-                    existingUser.ProfileImageUrl = user.ProfileImageUrl ?? existingUser.ProfileImageUrl; // Null kontrolü
+                    existingUser.ProfileImageUrl = user.ProfileImageUrl ?? existingUser.ProfileImageUrl;
+
+                    var passwordHasher = new PasswordHasher<User>();
+                    existingUser.PasswordHash = passwordHasher.HashPassword(existingUser, user.PasswordHash);
 
                     _context.Users.Update(existingUser);
                     TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
@@ -88,10 +87,7 @@ public class AdminController : Controller
                 }
             }
 
-            // Değişiklikleri kaydet
             await _context.SaveChangesAsync();
-
-            // Başarılı işlem sonrası Admin/Index sayfasına yönlendir
             return RedirectToAction("Index", "Admin");
         }
         catch (Exception ex)
@@ -101,10 +97,8 @@ public class AdminController : Controller
         }
     }
 
-    // Yeni kullanıcı ekleme işlemi
     public IActionResult AddUser()
     {
-        // Yeni bir kullanıcı eklemek için boş bir User nesnesi oluşturuyoruz
         return PartialView("EditUserPartialView", new User());
     }
 
@@ -119,7 +113,9 @@ public class AdminController : Controller
 
         try
         {
-            user.ProfileImageUrl ??= "default-image-url.jpg"; // Varsayılan resim yolunu kontrol et
+            user.ProfileImageUrl ??= "default-image-url.jpg";
+            var passwordHasher = new PasswordHasher<User>();
+            user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -144,6 +140,6 @@ public class AdminController : Controller
 
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
-        return Json(new { success = true });  //bu jsonu View olarak yazmayı denedim pek bir şey değişmedi.
+        return Json(new { success = true });
     }
 }

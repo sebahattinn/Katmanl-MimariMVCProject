@@ -1,0 +1,125 @@
+﻿@model OnlineGallery.Models.Artwork
+
+<div class="container mt-5">
+    <h2>@Model.Title</h2>
+    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
+    <p><strong>Açıklama:</strong> @Model.Description</p>
+    <p><strong>Fiyat:</strong> @(string.Format("{0:C}", Model.Price))</p> <!-- Format as currency -->
+    <div class="mt-4">
+        <!-- Satın alma işlemini onaylama formu -->
+        <form id="paymentForm" method="post">
+            <input type="hidden" id="artworkId" name="artworkId" value="@Model.ArtworkId" />
+            <input type="hidden" id="price" name="price" value="@Model.Price" />
+
+            <div class="form-group">
+                <label for="creditCard">Kredi Kartı Numarası:</label>
+                <input type="text" name="creditCard" class="form-control" placeholder="Kredi kartı numaranızı girin" required />
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">Son Kullanma Tarihi:</label>
+                <div class="d-flex">
+                    <input type="text" name="expiryMonth" class="form-control" placeholder="Ay" maxlength="2" required style="width: 60px;" />
+                    <span class="mx-2">/</span>
+                    <input type="text" name="expiryYear" class="form-control" placeholder="Yıl" maxlength="2" required style="width: 60px;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV Kodu:</label>
+                <input type="text" name="cvv" class="form-control" placeholder="CVV" maxlength="3" required />
+            </div>
+
+            <div class="form-group">
+                <label for="billingAddress">Sipariş Adresi:</label>
+                <input type="text" name="billingAddress" class="form-control" placeholder="Fatura adresinizi girin" required />
+            </div>
+
+            <button type="submit" class="btn btn-success mt-3">Satın Al</button>
+        </form>
+    </div>
+
+
+<!-- İyzico Ödeme Formu Entegrasyonu -->
+<script type="text/javascript">
+    // İyzico ödeme formu yükleme fonksiyonu
+    function startIyzicoPayment(token) {
+        var iyziInit = {
+            currency: "TRY",
+            token: token,
+            price: document.getElementById("price").value,
+            locale: "tr",
+            baseUrl: "https://sandbox-api.iyzipay.com",
+            merchantGatewayBaseUrl: "https://sandbox-merchantgw.iyzipay.com",
+            buyerName: "Higher",
+            buyerSurname: "Faster",
+            buyerEmail: "stronger@implementation.com",
+            gsmNumber: "+905555434332",
+            checkoutFormContent: `
+                    <script type="text/javascript">
+                        if (typeof iyziInit == 'undefined') {
+                            var iyziInit = {
+                                currency: "TRY",
+                                token: "a5b67652-c24a-4347-b61e-6c957bf30f1b",
+                                price: 5.20,
+                                locale: "en",
+                                baseUrl: "https://sandbox-api.iyzipay.com",
+                                merchantGatewayBaseUrl: "https://sandbox-merchantgw.iyzipay.com",
+                                registerCardEnabled: true,
+                                bkmEnabled: true,
+                                bankTransferEnabled: true,
+                                bankTransferTimeLimit: { "value": 5, "type": "day" },
+                                bankTransferRedirectUrl: "YOUR_CALLBACKURL",
+                                bankTransferCustomUIProps: {},
+                                campaignEnabled: false,
+                                paymentSourceName: "zooz",
+                                plusInstallmentResponseList: null,
+                                payWithIyzicoSingleTab: true,
+                                payWithIyzicoOneTab: false,
+                                mixPaymentEnabled: true,
+                                creditCardEnabled: true,
+                                bankTransferAccounts: [{
+                                    iban: "TR020006200035600006294884",
+                                    legalCompanyTitle: "iyzi Ödeme ve Elektronik Para Hizmetleri A.Ş.",
+                                    currency: "TRY",
+                                    bank: "Garanti Bankası",
+                                    bankId: 62,
+                                    bankLogoUrl: "https://static.iyzipay.com/checkoutform/img/banks/62.svg"
+                                }]
+                            };
+                        }
+</script>`,
+            createTag: function() {
+                var iyziJSTag = document.createElement('script');
+                iyziJSTag.setAttribute('src','https://sandbox-static.iyzipay.com/checkoutform/v2/bundle.js?v=1687112732810');
+                document.head.appendChild(iyziJSTag);
+            }
+        };
+        iyziInit.createTag();
+    }
+
+    // Ödeme formu submit işlemi
+    document.getElementById("paymentForm").onsubmit = function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        fetch('/Home/StartPayment', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                // Ödeme token'ını aldık ve İyzico ödeme formunu başlattık
+                startIyzicoPayment(data.token);
+            } else {
+                alert('Ödeme başlatılamadı, lütfen tekrar deneyin.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Bir hata oluştu, lütfen tekrar deneyin.');
+        });
+    };
+</script>

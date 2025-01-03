@@ -1,0 +1,47 @@
+﻿@model OnlineGallery.Models.Artwork
+
+<div class="container mt-5">
+    <h2>@Model.Title</h2>
+    <!-- Eğer görsel URL'si yoksa default görseli kullanıyoruz -->
+    <img src="@Model.ImageUrl ?? " /images/default.jpg"" alt="@Model.Title" class="img-fluid mb-3" />
+    <p><strong>Açıklama:</strong> @Model.Description</p>
+    <p><strong>Fiyat:</strong> @(string.Format("{0:C}", Model.Price))</p> <!-- Format as currency -->
+
+    <div class="mt-4">
+        <!-- Satın Al butonunu oluşturuyoruz, kullanıcıyı SatinAl.cshtml sayfasına yönlendiriyor -->
+        <a href="@Url.Action("SatinAl", "Home", new { id = Model.ArtworkId })" class="btn btn-success">Satın Al</a>
+        <a href="#yorumBolumu" class="btn btn-primary">Yorum Yap</a>
+    </div>
+
+    <!-- Yorum Bölümü -->
+    <div id="yorumBolumu" class="mt-5">
+        <h4>Yorumlar</h4>
+        <div>
+            <!-- Mevcut yorumları listele -->
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="mb-2">
+                        <strong>@comment.User.FullName (@comment.CommentDate.ToString("dd/MM/yyyy")):</strong>
+                        <p>@comment.Content</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Henüz yorum yapılmamış.</p>
+            }
+        </div>
+
+        <!-- Yeni Yorum Ekle -->
+        <form asp-action="AddComment" asp-controller="Home" method="post">
+            <input type="hidden" name="artworkId" value="@Model.ArtworkId" />
+            <div class="form-group">
+                <label for="content">Yorumunuz:</label>
+                <textarea name="content" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Yorum Yap</button>
+        </form>
+    </div>
+</div>

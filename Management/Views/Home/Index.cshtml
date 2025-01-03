@@ -26,7 +26,7 @@
 </div>
 
 <!-- Sanat eserlerini listeleme -->
-@model List<OnlineGallery.Models.Artwork>
+@model IEnumerable<OnlineGallery.Models.Artwork>
 
 @if (Model != null && Model.Any())
 {
@@ -34,25 +34,32 @@
         @foreach (var artwork in Model)
         {
             <div class="col-md-4">
-                <div class="artwork-item mb-4 p-3 border rounded shadow-sm text-center">
-                    <!-- Görsel -->
-                    @if (!string.IsNullOrEmpty(artwork.ImageUrl))
-                    {
-                        <img src="@artwork.ImageUrl" alt="@artwork.Title" class="img-fluid mb-3" style="max-height: 200px;" />
-                    }
-                    else
-                    {
-                        <p class="text-muted">Görsel bulunamadı.</p>
-                    }
+                <div class="card mb-4 shadow-sm">
+                    <!-- Görseli bağlantıya sararak tıklanabilir hale getirme -->
+                    <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="card-img-link">
+                        @if (!string.IsNullOrEmpty(artwork.ImageUrl))
+                        {
+                            <img src="@artwork.ImageUrl" class="card-img-top" alt="@artwork.Title" style="max-height: 200px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center mt-3">Görsel bulunamadı.</p>
+                        }
+                    </a>
 
-                    <!-- Başlık -->
-                    <h3>@artwork.Title</h3>
+                    <div class="card-body text-center">
+                        <!-- Başlık -->
+                        <h5 class="card-title">@artwork.Title</h5>
 
-                    <!-- Açıklama -->
-                    <p>@artwork.Description</p>
+                        <!-- Açıklama -->
+                        <p class="card-text">@artwork.Description</p>
 
-                    <!-- Fiyat -->
-                    <p><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
+                        <!-- Fiyat -->
+                        <p class="card-text"><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
+
+                        <!-- Detayları Gör Butonu -->
+                        <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="btn btn-primary">Detayları Gör</a>
+                    </div>
                 </div>
             </div>
         }
@@ -60,5 +67,6 @@
 }
 else
 {
-    <p>Gösterilecek sanat eseri bulunamadı.</p>
+    <p class="text-center">Gösterilecek sanat eseri bulunamadı.</p>
 }
+

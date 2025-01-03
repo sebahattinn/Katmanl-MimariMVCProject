@@ -98,7 +98,6 @@ namespace OnlineGallery.Controllers
                 return RedirectToAction("Login", "Account"); // Redirect to login page if the user is not authenticated
             }
 
-           // var userId = int.Parse(User.Identity.Name); // Assuming the user ID is stored in the Name claim
             var userId = int.Parse(User.FindFirst("UserId").Value); // Replace "UserId" with the actual claim type used to store the user ID
 
             var comment = new Comment
@@ -114,7 +113,6 @@ namespace OnlineGallery.Controllers
 
             return RedirectToAction("TableDetails", new { id = artworkId });
         }
-
 
         // Action to show artworks list in a partial view
         public IActionResult GetArtworkList()
@@ -197,6 +195,16 @@ namespace OnlineGallery.Controllers
         public IActionResult PurchaseFailed()
         {
             return View("PurchaseFailed");
+        }
+
+        // Search artworks by category
+        public IActionResult SearchByCategory(int categoryId)
+        {
+            // Seçilen kategoriye ait sanat eserlerini al
+            var artworks = _context.Artworks
+                                   .Where(a => a.CategoryId == categoryId)
+                                   .ToList();
+            return View("Index", artworks);
         }
     }
 }

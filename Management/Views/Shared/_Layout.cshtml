@@ -94,11 +94,10 @@
                 </ul>
 
                 <!-- Arama Çubuğu -->
-                <form asp-action="SearchByCategory" asp-controller="Categories" class="d-flex ms-auto" role="search">
-                    <input class="form-control me-2" type="search" name="category" placeholder="Kategori Ara" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Ara</button>
-                </form>
-            </div>
+                <div class="category-filter ms-auto">
+                    @await Component.InvokeAsync("CategoryFilter")
+                </div>
+
         </div>
     </nav>
 

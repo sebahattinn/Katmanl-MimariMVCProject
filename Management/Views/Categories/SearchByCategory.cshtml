@@ -1,14 +1,19 @@
-﻿@model IEnumerable<OnlineGallery.Models.Artwork>
+﻿@model List<OnlineGallery.Models.Artwork>
 
-<div class="artwork-list">
-    @foreach (var artwork in Model)
+<div>
+    <h2>Sanat Eserleri</h2>
+    @if (Model.Any())
     {
-        <div class="artwork-item">
-            <!-- Use Url.Content to generate the correct URL for the image -->
-            <img src="@Url.Content("~/Images/" + artwork.ImageUrl)" alt="@artwork.Title" />
-            <h3>@artwork.Title</h3>
-            <p>@artwork.Description</p>
-            <p><strong>Price:</strong> @string.Format("{0:C}", artwork.Price)</p>
-        </div>
+        foreach (var artwork in Model)
+        {
+            <div>
+                <h3>@artwork.Title</h3>
+                <img src="@artwork.ImageUrl" alt="@artwork.Title" />
+            </div>
+        }
+    }
+    else
+    {
+        <p>Bu kategoride sanat eseri bulunmamaktadır.</p>
     }
 </div>

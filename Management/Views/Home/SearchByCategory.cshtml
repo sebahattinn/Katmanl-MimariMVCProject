@@ -1,0 +1,12 @@
+﻿@model List<OnlineGallery.Models.Artwork>
+
+<div>
+    <h2>Sanat Eserleri</h2>
+    @foreach (var artwork in Model)
+    {
+        <div>
+            <h3>@artwork.Title</h3>
+            <img src="@artwork.ImageUrl" alt="@artwork.Title" />
+        </div>
+    }
+</div>

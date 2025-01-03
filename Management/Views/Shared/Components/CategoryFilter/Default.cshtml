@@ -1,0 +1,42 @@
+﻿@model OnlineGallery.Models.CategoryFilterViewModel
+
+<form asp-action="SearchByCategory" asp-controller="Home" method="get">
+    <label for="categorySearch">Kategori Seç:</label>
+    <select name="categoryId" class="form-select" onchange="this.form.submit()">
+        <option value="">Select Category</option>
+        @foreach (var category in Model.Categories)
+        {
+            <option value="@category.CategoryId">@category.Name</option>
+        }
+    </select>
+</form>
+
+<!-- Sanat Eserleri Listesi -->
+<div id="artworks-container">
+    @* Eğer kullanıcı bir kategori seçmişse, ilgili sanat eserlerini buraya yükleyeceğiz *@
+    @if (Model.Artworks != null && Model.Artworks.Count() > 0)
+    {
+        foreach (var artwork in Model.Artworks)
+        {
+            <div>
+                <h3>@artwork.Title</h3>
+                <p>@artwork.Description</p>
+                <!-- Diğer sanat eseri bilgilerini buraya ekleyebilirsiniz -->
+            </div>
+        }
+    }
+</div>
+
+<script>
+    function loadArtworks(categoryId) {
+        // Kategori seçildiğinde sanat eserlerini yükle
+        if (categoryId) {
+            // Kategoriye ait sanat eserlerini yükle
+            $('#artworks-container').load('/Home/SearchByCategory?categoryId=' + categoryId);
+        }
+        else {
+            // Kategori seçilmediyse container'ı temizle
+            $('#artworks-container').empty();
+        }
+    }
+</script>

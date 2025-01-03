@@ -93,7 +93,7 @@ footer a {
     }
 
 /* Mobile Uyumlu Navbar */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .navbar {
         font-size: 14px; /* Mobilde daha küçük yazı */
         padding: 10px 15px; /* Mobilde daha küçük padding */
@@ -101,6 +101,10 @@ footer a {
 
     .navbar-nav .nav-item .nav-link {
         font-size: 16px; /* Mobilde daha küçük font */
+    }
+
+    .navbar-toggler {
+        border-color: #f39c12; /* Toggler butonunun kenar rengi */
     }
 
     .navbar-toggler-icon {
@@ -118,4 +122,41 @@ footer a {
         footer .privacy-policy {
             font-size: 12px; /* Küçük cihazlarda daha küçük font */
         }
+}
+
+/* Mobile Uyumlu Sayfa Düzeni */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; /* Daha küçük padding */
+    }
+
+    .navbar-nav {
+        text-align: center; /* Menü öğelerini ortalar */
+    }
+
+        .navbar-nav .nav-item {
+            margin: 5px 0; /* Menü öğeleri arasındaki boşluğu azalt */
+        }
+
+    /* Kategori filtreyi mobilde tam genişlikte göstermek için */
+    .category-filter {
+        width: 100%;
+    }
+}
+
+/* Çok küçük cihazlar (telefon) için ekstra responsive düzenlemeler */
+@media (max-width: 480px) {
+    .navbar {
+        font-size: 12px; /* Daha da küçük yazı fontu */
+        padding: 8px 10px; /* Daha küçük padding */
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        font-size: 14px; /* Daha küçük font */
+    }
+
+    footer {
+        font-size: 12px; /* Mobilde çok küçük cihazlar için daha küçük yazı */
+        padding: 10px; /* Küçük cihazlar için padding azaltma */
+    }
 }

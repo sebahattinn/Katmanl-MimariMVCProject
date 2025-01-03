@@ -15,7 +15,7 @@
 
 <!-- Giriş Yap veya Üye Ol Butonları -->
 <div class="text-center mb-4">
-    @if (User.Identity.IsAuthenticated)
+    @if (User?.Identity?.IsAuthenticated == true)
     {
         <p class="lead">Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a></p>
     }
@@ -24,6 +24,8 @@
         <p class="lead">Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a></p>
     }
 </div>
+
+<!-- Kategori Filtreleme Bileşeni -->
 
 <!-- Sanat eserlerini listeleme -->
 @model IEnumerable<OnlineGallery.Models.Artwork>
@@ -69,4 +71,3 @@ else
 {
     <p class="text-center">Gösterilecek sanat eseri bulunamadı.</p>
 }
-

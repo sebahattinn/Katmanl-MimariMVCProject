@@ -144,6 +144,6 @@ public class AdminController : Controller
 
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
-        return Json(new { success = true });
+        return Json(new { success = true });  //bu jsonu View olarak yazmayı denedim pek bir şey değişmedi.
     }
 }

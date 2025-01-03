@@ -1,7 +1,7 @@
 ﻿@model OnlineGallery.Models.User
 
 <div class="container mt-4">
-    <h2>@(Model == null ? "Yeni Kullanıcı Ekle" : "Kullanıcı Düzenle")</h2>
+    <h2>Yeni Kullanıcı Ekle</h2>
 
     <!-- Başarı ve Hata Mesajları -->
     @if (TempData["SuccessMessage"] != null)
@@ -18,9 +18,8 @@
         </div>
     }
 
-    <!-- Kullanıcı düzenleme formu -->
-    <form asp-action="EditUser" method="POST" enctype="multipart/form-data">
-        <input type="hidden" asp-for="UserId" />
+    <!-- Kullanıcı ekleme formu -->
+    <form asp-action="AddUser" method="POST" enctype="multipart/form-data">
 
         <div class="mb-3">
             <label asp-for="FullName" class="form-label">Ad Soyad</label>
@@ -41,67 +40,29 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="PasswordHash" class="form-label">Password Hash</label>
+            <label asp-for="PasswordHash" class="form-label">Şifre (Hashlenmiş)</label>
             <input asp-for="PasswordHash" class="form-control" required />
             <span asp-validation-for="PasswordHash" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="ProfileImageUrl" class="form-label">Profil Resmi</label>
-            <input asp-for="ProfileImageUrl" class="form-control" value="@Model?.ProfileImageUrl ?? \" default-image-url.jpg\"" />
+            <input asp-for="ProfileImageUrl" class="form-control" />
             <span asp-validation-for="ProfileImageUrl" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="Role" class="form-label">Rol</label>
             <select asp-for="Role" class="form-control" required>
-                <option value="admin" selected="@(Model?.Role == "admin" ? "selected" : null)">Admin</option>
-                <option value="user" selected="@(Model?.Role == "user" ? "selected" : null)">Kullanıcı</option>
-                <option value="moderator" selected="@(Model?.Role == "moderator" ? "selected" : null)">Moderatör</option>
+                <option value="admin">Admin</option>
+                <option value="user">Kullanıcı</option>
+                <option value="moderator">Moderatör</option>
             </select>
             <span asp-validation-for="Role" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Kaydet</button>
     </form>
-
-    <hr />
-
-    <!-- Kullanıcı Bilgileri ve Düzenleme Linki -->
-    <h3>Mevcut Kullanıcı</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Ad Soyad</th>
-                <th>Email</th>
-                <th>Adres</th>
-                <th>Profil Resmi</th>
-                <th>Rol</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model?.FullName</td>
-                <td>@Model?.Email</td>
-                <td>@Model?.Address</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(Model?.ProfileImageUrl))
-                    {
-                        <img src="~/images/@Model.ProfileImageUrl" alt="Profil Resmi" width="50" height="50" />
-                    }
-                    else
-                    {
-                        <span>Resim yok</span>
-                    }
-                </td>
-                <td>@Model?.Role</td>
-                <td>
-                    <a asp-action="EditUser" asp-route-userId="@Model?.UserId" class="btn btn-warning btn-sm">Düzenle</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>
 
 @section Scripts {

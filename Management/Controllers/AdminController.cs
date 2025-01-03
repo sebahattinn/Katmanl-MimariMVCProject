@@ -33,35 +33,104 @@ public class AdminController : Controller
 
     public async Task<IActionResult> EditUser(int? userId)
     {
+        // Kullanıcı var mı kontrol et, yoksa yeni bir kullanıcı nesnesi oluştur
         var user = userId.HasValue ? await _context.Users.FindAsync(userId.Value) : new User();
+
+        // EditUserPartialView görümünü döndür
         return PartialView("EditUserPartialView", user);
     }
 
     [HttpPost]
     public async Task<IActionResult> EditUser(User user)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
+        {
+            // Geçersizlik durumunda hata mesajlarını döndür
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            {
+                Console.WriteLine(error.ErrorMessage);
+            }
+
+            TempData["ErrorMessage"] = "Geçersiz giriş, lütfen tüm alanları doğru doldurduğunuzdan emin olun.";
+            return PartialView("EditUserPartialView", user);
+        }
+
+        try
         {
             if (user.UserId == 0)
             {
+                // Yeni kullanıcı ekliyoruz
+                user.ProfileImageUrl ??= "default-image-url.jpg"; // Varsayılan resim yolunu kontrol et
                 _context.Users.Add(user);
                 TempData["SuccessMessage"] = "Yeni kullanıcı başarıyla eklendi!";
             }
             else
             {
+                // Kullanıcıyı güncelliyoruz
                 var existingUser = await _context.Users.FindAsync(user.UserId);
+
                 if (existingUser != null)
                 {
+                    // Kullanıcı bilgilerini güncelle
                     existingUser.FullName = user.FullName;
                     existingUser.Email = user.Email;
+                    existingUser.Address = user.Address; // Adres alanını güncelle
+                    existingUser.Role = user.Role;
+                    existingUser.ProfileImageUrl = user.ProfileImageUrl ?? existingUser.ProfileImageUrl; // Null kontrolü
+
                     _context.Users.Update(existingUser);
                     TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi!";
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "Kullanıcı bulunamadı!";
+                    return PartialView("EditUserPartialView", user);
+                }
             }
+
+            // Değişiklikleri kaydet
             await _context.SaveChangesAsync();
-            return RedirectToAction("Users");
+
+            // Başarılı işlem sonrası Admin/Index sayfasına yönlendir
+            return RedirectToAction("Index", "Admin");
         }
-        return PartialView("EditUserPartialView", user);
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Bir hata oluştu: {ex.Message}";
+            return PartialView("EditUserPartialView", user);
+        }
+    }
+
+    // Yeni kullanıcı ekleme işlemi
+    public IActionResult AddUser()
+    {
+        // Yeni bir kullanıcı eklemek için boş bir User nesnesi oluşturuyoruz
+        return PartialView("EditUserPartialView", new User());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddUser(User user)
+    {
+        if (!ModelState.IsValid)
+        {
+            TempData["ErrorMessage"] = "Geçersiz giriş, lütfen tüm alanları doğru doldurduğunuzdan emin olun.";
+            return PartialView("EditUserPartialView", user);
+        }
+
+        try
+        {
+            user.ProfileImageUrl ??= "default-image-url.jpg"; // Varsayılan resim yolunu kontrol et
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Yeni kullanıcı başarıyla eklendi!";
+            return RedirectToAction("Index", "Admin");
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Bir hata oluştu: {ex.Message}";
+            return PartialView("EditUserPartialView", user);
+        }
     }
 
     [HttpPost]

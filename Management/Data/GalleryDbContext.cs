@@ -3,7 +3,7 @@ using OnlineGallery.Models;  // User, Artwork ve diğer model sınıfları
 
 namespace OnlineGallery.Data
 {
-    public class GalleryDbContext : DbContext  // IdentityDbContext yerine DbContext kullanıyoruz
+    public class GalleryDbContext : DbContext  
     {
         public GalleryDbContext(DbContextOptions<GalleryDbContext> options) : base(options)
         {

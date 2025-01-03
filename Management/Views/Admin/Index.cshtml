@@ -20,7 +20,9 @@
     <button id="load-user-list" class="btn btn-primary">Kullanıcıları Listele</button>
 </div>
 
-<button id="refresh-user-list" class="btn btn-primary mt-3">Kullanıcıları Yenile</button>
+<div id="add-user-form-container" style="display: none;">
+    @Html.Partial("EditUserPartialView", new OnlineGallery.Models.User())
+</div>
 
 <script>
     document.getElementById('load-user-list').addEventListener('click', function () {
@@ -32,7 +34,15 @@
     });
 
     document.getElementById('add-user').addEventListener('click', function () {
-        alert('Kullanıcı Ekleme işlemi başlatılacaktır.');
+        // Kullanıcı ekleme formunu görünür yap
+        document.getElementById('add-user-form-container').style.display = 'block';
+
+        // Formun gösterilmesi için gerekli olan POST isteğini gönderebilirsiniz
+        fetch('@Url.Action("AddUser", "Admin")')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('add-user-form-container').innerHTML = data;
+            });
     });
 
     document.getElementById('delete-user').addEventListener('click', function () {

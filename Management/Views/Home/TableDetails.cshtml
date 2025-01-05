@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h2>@Model.Title</h2>
     <!-- Eğer görsel URL'si yoksa default görseli kullanıyoruz -->
-    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" /> 
+    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
     <p><strong>Açıklama:</strong> @Model.Description</p>
     <p><strong>Fiyat:</strong> @(string.Format("{0:C}", Model.Price))</p> <!-- Format as currency -->
 
@@ -35,13 +35,49 @@
         </div>
 
         <!-- Yeni Yorum Ekle -->
-        <form asp-action="AddComment" asp-controller="Home" method="post">
+        <form asp-action="AddComment" asp-controller="Home" method="post" id="commentForm">
             <input type="hidden" name="artworkId" value="@Model.ArtworkId" />
+            <input type="hidden" name="userId" id="userId" /> <!-- Hidden field to store userId -->
+
             <div class="form-group">
                 <label for="content">Yorumunuz:</label>
                 <textarea name="content" class="form-control" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Yorum Yap</button>
+            <button type="button" class="btn btn-primary mt-2" id="submitButton">Yorum Yap</button> <!-- Butona tıklanınca işlem yapılacak -->
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+    document.getElementById('submitButton').onclick = function (event) {
+        event.preventDefault(); // Formun normal gönderilmesini engelle
+
+        // Check if AuthToken exists in localStorage
+        var authToken = localStorage.getItem('authToken');
+
+        if (authToken) {
+            try {
+                // Decode the authToken to extract user_id
+                // Assuming the token is a JSON string like {"user_id": "someId", ...}
+                var decodedToken = JSON.parse(atob(authToken.split('.')[1])); // JWT format (base64 encoded JSON)
+
+                if (decodedToken.user_id) {
+                    // Set the userId in the hidden input field
+                    document.getElementById('userId').value = decodedToken.user_id;
+                    // Submit the form after setting the userId
+                    document.getElementById('commentForm').submit(); // Formu gönder
+                } else {
+                    // Redirect to login if no user_id in token
+                    window.location.href = '@Url.Action("Login", "Account")'; // Adjust URL as necessary
+                }
+            } catch (e) {
+                console.error("Error decoding token:", e);
+                // Redirect to login if there's an issue decoding the token
+                window.location.href = '@Url.Action("Login", "Account")';
+            }
+        } else {
+            // Redirect to login if AuthToken is missing
+            window.location.href = '@Url.Action("Login", "Account")'; // Adjust URL as necessary
+        }
+    }
+</script>

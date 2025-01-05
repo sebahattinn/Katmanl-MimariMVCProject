@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 public class AccountController : Controller
 {
@@ -68,20 +71,10 @@ public class AccountController : Controller
 
                 if (result == PasswordVerificationResult.Success)
                 {
-                    // Sign in the user
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Email),
-                        new Claim(ClaimTypes.Role, user.Role)
-                    };
+                    var token = GenerateToken(user.UserId, user.Role);
 
-                    var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = model.RememberMe
-                    };
-
-                    await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                    // Store token in TempData
+                    TempData["AuthToken"] = token;
 
                     if (user.Role == "admin")
                     {
@@ -103,10 +96,34 @@ public class AccountController : Controller
         return View(model);
     }
 
+
+    // generate jwt token
+    private string GenerateToken(int user_id, string role)
+    {
+        var claims = new[]
+        {
+            new Claim("user_id", user_id.ToString()),
+            new Claim("role", role)
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TabiSizAnneleriTarafındanSizeEmanetEdilenCocuklariHerBakimdanYetersizGordugunuz"));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: "application",
+            audience: "application",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(30),
+            signingCredentials: creds);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+
     [HttpPost]
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+        await HttpContext.SignOutAsync();
         return RedirectToAction("Login", "Account");
     }
 }

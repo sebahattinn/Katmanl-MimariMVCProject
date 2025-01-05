@@ -14,15 +14,9 @@
 }
 
 <!-- Giriş Yap veya Üye Ol Butonları -->
-<div class="text-center mb-4">
-    @if (User?.Identity?.IsAuthenticated == true)
-    {
-        <p class="lead">Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a></p>
-    }
-    else
-    {
-        <p class="lead">Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a></p>
-    }
+<div class="text-center mb-4" id="authStatus">
+    <!-- Bu kısım JavaScript ile güncellenecek -->
+    <p class="lead" id="authMessage"></p>
 </div>
 
 <!-- Kategori Filtreleme Bileşeni -->
@@ -70,4 +64,20 @@
 else
 {
     <p class="text-center">Gösterilecek sanat eseri bulunamadı.</p>
+}
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM yüklendi.');
+            var authToken = '@TempData["AuthToken"]';
+            console.log(authToken);
+            if (authToken) {
+                localStorage.setItem('authToken', authToken);
+                console.log(authToken, "aynen");
+                document.getElementById('authMessage').innerHTML = 'Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a>';
+            } else {
+                document.getElementById('authMessage').innerHTML = 'Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a>';
+            }
+        });
+    </script>
 }

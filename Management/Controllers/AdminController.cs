@@ -280,16 +280,14 @@ public class AdminController : Controller
 
     // Delete Artwork by Title Action
     [HttpPost]
-    public async Task<IActionResult> DeleteArtworkByTitle([FromBody] dynamic data)
+    public async Task<IActionResult> DeleteArtworkByTitle([FromBody] string title)
     {
-        string title = data?.title;
-
         // Log the title received
         Console.WriteLine($"Received title: {title}");
 
         if (string.IsNullOrEmpty(title))
         {
-            return Json(new { success = false, message = "Bu İsimde Bir Görsel Bulunamadı" });
+            return Json(new { success = false, message = "Bu İsimde Bir Sanat Eseri Bulunamadı" });
         }
 
         // Perform a case-insensitive search for the artwork
@@ -308,4 +306,5 @@ public class AdminController : Controller
         await _context.SaveChangesAsync();
         return Json(new { success = true });
     }
+
 }

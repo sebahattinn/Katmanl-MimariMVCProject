@@ -26,7 +26,7 @@
     </div>
 
     <div>
-        <input type="hidden" Isim="artworkTitle" value="@Model.Title" />
+        <input type="hidden" id="artworkTitle" value="@Model.Title" />
         <button onclick="deleteArtwork()" class="btn btn-danger">Sil</button>
         <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
     </div>
@@ -42,13 +42,14 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ title: title })
+            body: JSON.stringify(title)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Artwork deleted successfully.');
-                // Optionally, refresh the page or update the UI
+                alert('Sanat eseri başarıyla silindi.');
+                // Sayfayı yeniden yükleyebilir veya UI'yi güncelleyebilirsiniz
+                window.location.href = '@Url.Action("Index", "Admin")'; // Admin sayfasına yönlendir
             } else {
                 alert(data.message);
             }

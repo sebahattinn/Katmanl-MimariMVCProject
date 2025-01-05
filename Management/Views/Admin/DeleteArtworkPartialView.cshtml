@@ -1,0 +1,58 @@
+﻿@model OnlineGallery.Models.Artwork
+
+<div class="container mt-4">
+    <h3>Sanat Eserini Sil</h3>
+    <p>Bu sanat eserini silmek istediğinizden emin misiniz?</p>
+
+    <div class="mb-3">
+        <label class="form-label">Eser Adı:</label>
+        <p>@Model.Title</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Açıklama:</label>
+        <p>@Model.Description</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Fiyat:</label>
+        <p>@Model.Price.ToString("C")</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Kategori ID:</label>
+        <p>@Model.CategoryId</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Resim URL:</label>
+        <p>@Model.ImageUrl</p>
+    </div>
+
+    <div>
+        <input type="hidden" Isim="artworkTitle" value="@Model.Title" />
+        <button onclick="deleteArtwork()" class="btn btn-danger">Sil</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
+    </div>
+</div>
+
+<script>
+    function deleteArtwork() {
+        const title = document.getElementById('artworkTitle').value;
+        console.log(`Sending title: ${title}`); // Log the title being sent
+
+        fetch('@Url.Action("DeleteArtworkByTitle", "Admin")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: title })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Artwork deleted successfully.');
+                // Optionally, refresh the page or update the UI
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>

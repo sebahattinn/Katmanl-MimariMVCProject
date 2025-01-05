@@ -89,6 +89,7 @@ namespace OnlineGallery.Controllers
             return View(artwork); // Show a confirmation page after purchase
         }
 
+
         // Action to add a comment
         [HttpPost]
         public IActionResult AddComment(int artworkId, string content)

@@ -28,7 +28,7 @@
             <!-- İletişim Formu -->
             <div class="col-md-6">
                 <h3>İletişim Formu</h3>
-                <form action="/Home/SendContact" method="post">
+                <form id="contactForm">
                     <div class="form-group">
                         <label for="name">Adınız</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -76,5 +76,14 @@
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Formun varsayılan submit davranışını engeller
+            alert("Mesajınız başarıyla gönderilmiştir!");
+            window.location.href = "/Home/Index"; // Home/Index sayfasına yönlendirir
+        });
+    </script>
 </body>
 </html>

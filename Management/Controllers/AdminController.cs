@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineGallery.Data;
 using OnlineGallery.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +18,13 @@ public class AdminController : Controller
         _context = context;
     }
 
+    // Index Action
     public IActionResult Index()
     {
         return View();
     }
 
+    // Users Action
     public async Task<IActionResult> Users()
     {
         var users = await _context.Users.ToListAsync();
@@ -32,6 +37,7 @@ public class AdminController : Controller
         return PartialView("UserList", users);
     }
 
+    // Edit User Action
     public async Task<IActionResult> EditUser(int? userId)
     {
         var user = userId.HasValue ? await _context.Users.FindAsync(userId.Value) : new User();
@@ -99,7 +105,7 @@ public class AdminController : Controller
 
     public IActionResult AddUser()
     {
-        return PartialView("EditUserPartialView", new User());
+        return PartialView("AddUserPartialView", new User());
     }
 
     [HttpPost]
@@ -139,6 +145,166 @@ public class AdminController : Controller
         }
 
         _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return Json(new { success = true });
+    }
+
+    // Add Artwork Action
+    public async Task<IActionResult> AddArtwork()
+    {
+        var categories = await _context.Categories.ToListAsync();
+        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+
+        var defaultCategory = categories.FirstOrDefault();
+        var newArtwork = new Artwork
+        {
+            Title = "Default Title",
+            Description = "Default Description",
+            ImageUrl = "default-image-url.jpg",
+            Category = defaultCategory ?? new Category { CategoryId = 1, Name = "Default Category" },
+            CategoryId = defaultCategory?.CategoryId ?? 1
+        };
+
+        return PartialView("AddArtworkPartialView", newArtwork);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddArtwork(Artwork artwork)
+    {
+        var categories = await _context.Categories.ToListAsync();
+        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error.ErrorMessage);
+            }
+
+            TempData["ErrorMessage"] = "Invalid input, please ensure all fields are filled out correctly.";
+            return PartialView("AddArtworkPartialView", artwork);
+        }
+
+        try
+        {
+            var selectedCategory = await _context.Categories.FindAsync(artwork.CategoryId);
+            if (selectedCategory == null)
+            {
+                TempData["ErrorMessage"] = "Selected category not found.";
+                return PartialView("AddArtworkPartialView", artwork);
+            }
+
+            artwork.Category = selectedCategory;
+
+            _context.Artworks.Add(artwork);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "New artwork added successfully!";
+            return RedirectToAction("Index", "Admin");
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+            return PartialView("AddArtworkPartialView", artwork);
+        }
+    }
+
+    // Edit Artwork by Title Action
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> EditArtworkByTitle(string title)
+    {
+        var artwork = await _context.Artworks.FirstOrDefaultAsync(a => a.Title == title);
+        if (artwork == null)
+        {
+            TempData["ErrorMessage"] = "Sanat eseri bulunamadı!";
+            return RedirectToAction("Index", "Admin");
+        }
+
+        var categories = await _context.Categories.ToListAsync();
+        if (categories == null || !categories.Any())
+        {
+            TempData["ErrorMessage"] = "Kategori mevcut değil. Lütfen önce kategori ekleyin.";
+            return RedirectToAction("Index", "Admin");
+        }
+
+        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+        return PartialView("EditArtworkPartialView", artwork);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditArtworkByTitle(Artwork artwork)
+    {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error.ErrorMessage);
+            }
+
+            TempData["ErrorMessage"] = "Geçersiz giriş, lütfen tüm alanları doğru doldurduğunuzdan emin olun.";
+            return PartialView("EditArtworkPartialView", artwork);
+        }
+
+        try
+        {
+            var existingArtwork = await _context.Artworks.FindAsync(artwork.ArtworkId);
+
+            if (existingArtwork != null)
+            {
+                existingArtwork.Title = artwork.Title;
+                existingArtwork.Description = artwork.Description;
+                existingArtwork.Price = artwork.Price;
+                existingArtwork.CategoryId = artwork.CategoryId;
+                existingArtwork.ImageUrl = artwork.ImageUrl;
+
+                _context.Artworks.Update(existingArtwork);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "Sanat eseri başarıyla güncellendi!";
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Sanat eseri bulunamadı!";
+                return PartialView("EditArtworkPartialView", artwork);
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Bir hata oluştu: {ex.Message}";
+            return PartialView("EditArtworkPartialView", artwork);
+        }
+    }
+
+    // Delete Artwork by Title Action
+    [HttpPost]
+    public async Task<IActionResult> DeleteArtworkByTitle([FromBody] dynamic data)
+    {
+        string title = data?.title;
+
+        // Log the title received
+        Console.WriteLine($"Received title: {title}");
+
+        if (string.IsNullOrEmpty(title))
+        {
+            return Json(new { success = false, message = "Bu İsimde Bir Görsel Bulunamadı" });
+        }
+
+        // Perform a case-insensitive search for the artwork
+        var artwork = await _context.Artworks
+            .FirstOrDefaultAsync(a => a.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+
+        if (artwork == null)
+        {
+            return Json(new { success = false, message = "Sanat eseri bulunamadı." });
+        }
+
+        // Log the artwork found
+        Console.WriteLine($"Found artwork: {artwork.Title}");
+
+        _context.Artworks.Remove(artwork);
         await _context.SaveChangesAsync();
         return Json(new { success = true });
     }

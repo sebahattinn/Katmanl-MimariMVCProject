@@ -12,8 +12,8 @@ using OnlineGallery.Data;
 namespace OnlineGallery.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    [Migration("20250102152329_sebo")]
-    partial class sebo
+    [Migration("20250105181427_aybarsmete")]
+    partial class aybarsmete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,7 +162,6 @@ namespace OnlineGallery.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")

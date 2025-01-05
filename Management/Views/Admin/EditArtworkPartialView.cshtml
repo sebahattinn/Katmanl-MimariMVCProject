@@ -1,0 +1,93 @@
+﻿@model OnlineGallery.Models.Artwork
+
+<div class="container mt-4">
+    <h2>Edit Artwork</h2>
+
+    <!-- Success and Error Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Artwork Edit Form -->
+    @if (ViewBag.Categories != null)
+    {
+        <form id="editArtworkForm" asp-action="EditArtworkByTitle" method="POST" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ArtworkId" />
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" required />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories" required>
+                    <option value="">Select Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" required />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Categories data is not available. Please try again later.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on('submit', '#editArtworkForm', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (response) {
+                    // Handle success
+                    alert('Artwork successfully updated!');
+                },
+                error: function (response) {
+                    // Handle error
+                    console.error('Error:', response);
+                    alert('An error occurred while updating the artwork.');
+                }
+            });
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

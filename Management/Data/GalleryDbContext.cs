@@ -13,8 +13,8 @@ namespace OnlineGallery.Data
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Artwork> Artworks { get; set; }  // Artwork entegre edildi
-        public DbSet<User> Users { get; set; } // Users tablosunu ekledim
+        public DbSet<Artwork> Artworks { get; set; }  
+        public DbSet<User> Users { get; set; } 
 
         // Veritabanı ilişkilerini OnModelCreating metodunda yapılandırıyoruz
         protected override void OnModelCreating(ModelBuilder modelBuilder)

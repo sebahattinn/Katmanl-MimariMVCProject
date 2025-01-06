@@ -1,3 +1,28 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    string userRole = ""; // Varsayılan olarak boş
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Varsayılan layout
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // LocalStorage'dan kullanıcı rolünü al
+            const role = localStorage.getItem("userRole");
+
+            // Eğer rol 'admin' ise layout değişimi için backend'e bilgi gönder
+            if (role === "admin") {
+                fetch('@Url.Action("SetAdminLayout", "Account")', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ role: role })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAdmin) {
+                        location.reload(); // Admin ise sayfayı yeniden yükle
+                    }
+                });
+            }
+        });
+    </script>
 }

@@ -19,7 +19,6 @@ public class AccountController : Controller
         _context = context;
     }
 
-    // User Registration
     [HttpGet]
     public IActionResult Register()
     {
@@ -51,7 +50,6 @@ public class AccountController : Controller
         return View(model);
     }
 
-    // User Login
     [HttpGet]
     public IActionResult Login()
     {
@@ -96,12 +94,10 @@ public class AccountController : Controller
         return View(model);
     }
 
-
-    // generate jwt token
+    // Generate JWT token
     private string GenerateToken(int user_id, string role)
     {
-        var claims = new[]
-        {
+        var claims = new[] {
             new Claim("user_id", user_id.ToString()),
             new Claim("role", role)
         };
@@ -119,11 +115,24 @@ public class AccountController : Controller
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
         return RedirectToAction("Login", "Account");
+    }
+
+    [HttpPost]
+    public JsonResult SetAdminLayout([FromBody] dynamic request)
+    {
+        string role = request.role?.ToString();
+        if (role == "admin")
+        {
+            TempData["Layout"] = "~/Views/Shared/_AdminLayout.cshtml";
+            return Json(new { isAdmin = true });
+        }
+
+        TempData["Layout"] = "~/Views/Shared/_Layout.cshtml";
+        return Json(new { isAdmin = false });
     }
 }

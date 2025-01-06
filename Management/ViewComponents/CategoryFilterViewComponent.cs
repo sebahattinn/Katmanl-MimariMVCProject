@@ -21,7 +21,7 @@ namespace OnlineGallery.ViewComponents
             var viewModel = new CategoryFilterViewModel
             {
                 Categories = await _context.Categories.ToListAsync(),
-             //   Artworks = await _context.Artworks.ToListAsync() // Sanat eserlerini de ekliyoruz
+             //   Artworks = await _context.Artworks.ToListAsync() // Sanat eserlerini de ekliyoruz sakın burayı çalıştırma
             };
 
             return View(viewModel);

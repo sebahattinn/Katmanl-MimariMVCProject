@@ -13,7 +13,6 @@ namespace OnlineGallery.Models
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
-
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Password Hash is required.")]
@@ -21,7 +20,6 @@ namespace OnlineGallery.Models
 
         [Required(ErrorMessage = "Role is required.")]
         public string Role { get; set; }  // Kullanıcının rolü
-
         public string? ProfileImageUrl { get; set; } = "default.jpg"; // Kullanıcının profil resmi
 
         // Navigation properties

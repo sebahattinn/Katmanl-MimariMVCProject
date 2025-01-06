@@ -27,33 +27,8 @@
 
     <div>
         <input type="hidden" id="artworkTitle" value="@Model.Title" />
-        <button onclick="deleteArtwork()" class="btn btn-danger">Sil</button>
+        <button onclick=DeleteArtworkByTitle(@Model.Title) class="btn btn-danger">Sil</button>
         <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
     </div>
 </div>
 
-<script>
-    function deleteArtwork() {
-        const title = document.getElementById('artworkTitle').value;
-        console.log(`Sending title: ${title}`); // Log the title being sent
-
-        fetch('@Url.Action("DeleteArtworkByTitle", "Admin")', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(title)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Sanat eseri başarıyla silindi.');
-                // Sayfayı yeniden yükleyebilir veya UI'yi güncelleyebilirsiniz
-                window.location.href = '@Url.Action("Index", "Admin")'; // Admin sayfasına yönlendir
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-</script>

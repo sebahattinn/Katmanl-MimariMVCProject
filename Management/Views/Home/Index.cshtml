@@ -1,16 +1,17 @@
 ﻿@{
+    Layout = TempData["Layout"] != null
+        ? TempData["Layout"].ToString()
+        : "~/Views/Shared/_Layout.cshtml";
+
     ViewData["Title"] = "Ana Sayfa";
 }
-
-<!-- Ana Sayfa Başlığı -->
-<h1 class="text-center my-5">Sebonun Websiteye Hoş Geldiniz!</h1>
 
 <!-- TempData'dan gelen mesajı gösterme -->
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success">
+        <div class="alert alert-success">
         @TempData["SuccessMessage"]
-    </div>
+        </div>
 }
 
 <!-- Giriş Yap veya Üye Ol Butonları -->
@@ -19,65 +20,72 @@
     <p class="lead" id="authMessage"></p>
 </div>
 
-<!-- Kategori Filtreleme Bileşeni -->
+<!-- Admin'e Özel Buton -->
+@{
+    var role = TempData["Role"]?.ToString();  // TempData'dan admin rolünü alıyoruz
+}
+@if (role == "admin")
+{
+        <div class="text-center mb-4">
+            <button class="btn btn-danger" onclick="window.location.href='@Url.Action("Index", "Admin")'">
+                Admin Paneline Git
+            </button>
+        </div>
+}
 
 <!-- Sanat eserlerini listeleme -->
 @model IEnumerable<OnlineGallery.Models.Artwork>
 
 @if (Model != null && Model.Any())
 {
-    <div class="row">
+        <div class="row">
         @foreach (var artwork in Model)
         {
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <!-- Görseli bağlantıya sararak tıklanabilir hale getirme -->
-                    <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="card-img-link">
-                        @if (!string.IsNullOrEmpty(artwork.ImageUrl))
-                        {
-                            <img src="@artwork.ImageUrl" class="card-img-top" alt="@artwork.Title" style="max-height: 200px; object-fit: cover;" />
-                        }
-                        else
-                        {
-                            <p class="text-muted text-center mt-3">Görsel bulunamadı.</p>
-                        }
-                    </a>
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <!-- Görseli bağlantıya sararak tıklanabilir hale getirme -->
+                            <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="card-img-link">
+                                    <img src="~/@artwork.ImageUrl"
+                                         class="card-img-top"
+                                         alt="@artwork.Title"
+                                         style="max-height: 200px; object-fit: cover;" />
+                            </a>
+                            <div class="card-body text-center">
+                                <!-- Başlık -->
+                                <h5 class="card-title">@artwork.Title</h5>
 
-                    <div class="card-body text-center">
-                        <!-- Başlık -->
-                        <h5 class="card-title">@artwork.Title</h5>
+                                <!-- Açıklama -->
+                                <p class="card-text">@artwork.Description</p>
 
-                        <!-- Açıklama -->
-                        <p class="card-text">@artwork.Description</p>
+                                <!-- Fiyat -->
+                                <p class="card-text"><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
 
-                        <!-- Fiyat -->
-                        <p class="card-text"><strong>Fiyat:</strong> @string.Format("{0:C}", artwork.Price)</p>
-
-                        <!-- Detayları Gör Butonu -->
-                        <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="btn btn-primary">Detayları Gör</a>
+                                <!-- Detayları Gör Butonu -->
+                                <a href="@Url.Action("TableDetails", "Home", new { id = artwork.ArtworkId })" class="btn btn-primary">Detayları Gör</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
         }
-    </div>
+        </div>
 }
 else
 {
-    <p class="text-center">Gösterilecek sanat eseri bulunamadı.</p>
+        <p class="text-center">Gösterilecek sanat eseri bulunamadı.</p>
 }
-@section Scripts{
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log('DOM yüklendi.');
-            var authToken = '@TempData["AuthToken"]';
-            console.log(authToken);
-            if (authToken) {
-                localStorage.setItem('authToken', authToken);
-                console.log(authToken, "aynen");
-                document.getElementById('authMessage').innerHTML = 'Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a>';
-            } else {
-                document.getElementById('authMessage').innerHTML = 'Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a>';
-            }
-        });
-    </script>
+
+@section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log('DOM yüklendi.');
+                var authToken = '@TempData["AuthToken"]';
+                console.log(authToken);
+                if (authToken) {
+                    localStorage.setItem('authToken', authToken);
+                    console.log(authToken, "aynen");
+                    document.getElementById('authMessage').innerHTML = 'Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a>';
+                } else {
+                    document.getElementById('authMessage').innerHTML = 'Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a>';
+                }
+            });
+        </script>
 }

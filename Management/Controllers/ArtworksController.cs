@@ -5,7 +5,7 @@ using OnlineGallery.Data;
 
 public class ArtworksController : Controller
 {
-    private readonly GalleryDbContext _context; // ApplicationDbContext yerine GalleryDbContext kullanıldı.
+    private readonly GalleryDbContext _context; 
 
     public ArtworksController(GalleryDbContext context) // GalleryDbContext constructor'a geçirildi.
     {

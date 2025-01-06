@@ -3,13 +3,13 @@
 <div class="container mt-5">
     <h2>@Model.Title</h2>
     <!-- Eğer görsel URL'si yoksa default görseli kullanıyoruz -->
-    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
+    <img src="~/@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
     <p><strong>Açıklama:</strong> @Model.Description</p>
-    <p><strong>Fiyat:</strong> @(string.Format("{0:C}", Model.Price))</p> <!-- Format as currency -->
+    <p><strong>Fiyat:</strong> @(string.Format("{0:C}", @Model.Price))</p> <!-- Format as currency -->
 
     <div class="mt-4">
         <!-- Satın Al butonunu oluşturuyoruz, kullanıcıyı SatinAl.cshtml sayfasına yönlendiriyor -->
-        <a href="@Url.Action("SatinAl", "Home", new { id = Model.ArtworkId })" class="btn btn-success">Satın Al</a>
+        <a href="@Url.Action("SatinAl", "Home", new { id = @Model.ArtworkId })" class="btn btn-success">Satın Al</a>
         <a href="#yorumBolumu" class="btn btn-primary">Yorum Yap</a>
     </div>
 
@@ -49,35 +49,60 @@
 </div>
 
 <script type="text/javascript">
+    // Yorum Yap butonu
     document.getElementById('submitButton').onclick = function (event) {
         event.preventDefault(); // Formun normal gönderilmesini engelle
 
-        // Check if AuthToken exists in localStorage
         var authToken = localStorage.getItem('authToken');
 
         if (authToken) {
             try {
-                // Decode the authToken to extract user_id
-                // Assuming the token is a JSON string like {"user_id": "someId", ...}
                 var decodedToken = JSON.parse(atob(authToken.split('.')[1])); // JWT format (base64 encoded JSON)
 
                 if (decodedToken.user_id) {
-                    // Set the userId in the hidden input field
                     document.getElementById('userId').value = decodedToken.user_id;
-                    // Submit the form after setting the userId
                     document.getElementById('commentForm').submit(); // Formu gönder
                 } else {
-                    // Redirect to login if no user_id in token
-                    window.location.href = '@Url.Action("Login", "Account")'; // Adjust URL as necessary
+                    alert("Yorum yapabilmeniz için oturum açmanız gerekiyor.");
+                    window.location.href = '@Url.Action("Login", "Account")';
                 }
             } catch (e) {
                 console.error("Error decoding token:", e);
-                // Redirect to login if there's an issue decoding the token
+                alert("Yorum yapabilmeniz için oturum açmanız gerekiyor.");
                 window.location.href = '@Url.Action("Login", "Account")';
             }
         } else {
-            // Redirect to login if AuthToken is missing
-            window.location.href = '@Url.Action("Login", "Account")'; // Adjust URL as necessary
+            alert("Yorum yapabilmeniz için oturum açmanız gerekiyor.");
+            window.location.href = '@Url.Action("Login", "Account")';
         }
-    }
+    };
+
+    // Satın Al butonu
+    document.querySelector('.btn-success').onclick = function (event) {
+        event.preventDefault(); // Link yönlendirmesini engelle
+
+        var authToken = localStorage.getItem('authToken');
+
+        if (authToken) {
+            try {
+                var decodedToken = JSON.parse(atob(authToken.split('.')[1])); // JWT format (base64 encoded JSON)
+
+                if (decodedToken.user_id) {
+                    // Eğer oturum açıksa satın alma sayfasına yönlendir
+                    window.location.href = this.href; // Satın Al URL'sine git
+                } else {
+                    alert("Satın alma işlemi yapabilmeniz için oturum açmanız gerekiyor.");
+                    window.location.href = '@Url.Action("Login", "Account")';
+                }
+            } catch (e) {
+                console.error("Error decoding token:", e);
+                alert("Satın alma işlemi yapabilmeniz için oturum açmanız gerekiyor.");
+                window.location.href = '@Url.Action("Login", "Account")';
+            }
+        } else {
+            alert("Satın alma işlemi yapabilmeniz için oturum açmanız gerekiyor.");
+            window.location.href = '@Url.Action("Login", "Account")';
+        }
+    };
 </script>
+

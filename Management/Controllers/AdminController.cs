@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -119,7 +119,7 @@ public class AdminController : Controller
 
         try
         {
-            user.ProfileImageUrl ??= "default-image-url.jpg";
+            user.ProfileImageUrl ??= "Images\\default.jpg";
             var passwordHasher = new PasswordHasher<User>();
             user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
             _context.Users.Add(user);
@@ -160,7 +160,7 @@ public class AdminController : Controller
         {
             Title = "Default Title",
             Description = "Default Description",
-            ImageUrl = "default-image-url.jpg",
+            ImageUrl = "Images\\default.jpg",
             Category = defaultCategory ?? new Category { CategoryId = 1, Name = "Default Category" },
             CategoryId = defaultCategory?.CategoryId ?? 1
         };
@@ -172,7 +172,7 @@ public class AdminController : Controller
     public async Task<IActionResult> AddArtwork(Artwork artwork)
     {
         var categories = await _context.Categories.ToListAsync();
-        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
+        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");  //Bir ister burada karşılanıyor.
 
         if (!ModelState.IsValid)
         {
@@ -211,14 +211,15 @@ public class AdminController : Controller
     }
 
     // Edit Artwork by Title Action
-    [Authorize(Roles = "admin")]
+  //  [Authorize(Roles = "admin")]
     public async Task<IActionResult> EditArtworkByTitle(string title)
     {
         var artwork = await _context.Artworks.FirstOrDefaultAsync(a => a.Title == title);
         if (artwork == null)
         {
+            
             TempData["ErrorMessage"] = "Sanat eseri bulunamadı!";
-            return RedirectToAction("Index", "Admin");
+            return PartialView("EditArtworkPartialView", artwork);
         }
 
         var categories = await _context.Categories.ToListAsync();
@@ -278,7 +279,6 @@ public class AdminController : Controller
         }
     }
 
-    // Delete Artwork by Title Action
     [HttpPost]
     public async Task<IActionResult> DeleteArtworkByTitle([FromBody] string title)
     {

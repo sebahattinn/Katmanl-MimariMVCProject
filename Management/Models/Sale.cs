@@ -6,7 +6,6 @@ public class Sale
     public int ArtworkId { get; set; }
     public int UserId { get; set; }
     public DateTime SaleDate { get; set; }
-
     public decimal Price { get; set; }
 
     // Navigation properties

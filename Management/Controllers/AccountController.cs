@@ -18,6 +18,7 @@ public class AccountController : Controller
     {
         _context = context;
     }
+ 
 
     [HttpGet]
     public IActionResult Register()
@@ -122,17 +123,5 @@ public class AccountController : Controller
         return RedirectToAction("Login", "Account");
     }
 
-    [HttpPost]
-    public JsonResult SetAdminLayout([FromBody] dynamic request)
-    {
-        string role = request.role?.ToString();
-        if (role == "admin")
-        {
-            TempData["Layout"] = "~/Views/Shared/_AdminLayout.cshtml";
-            return Json(new { isAdmin = true });
-        }
 
-        TempData["Layout"] = "~/Views/Shared/_Layout.cshtml";
-        return Json(new { isAdmin = false });
-    }
 }

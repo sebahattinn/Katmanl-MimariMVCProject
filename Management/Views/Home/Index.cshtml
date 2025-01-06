@@ -1,18 +1,8 @@
 ﻿@{
-    Layout = TempData["Layout"] != null
-        ? TempData["Layout"].ToString()
-        : "~/Views/Shared/_Layout.cshtml";
-
     ViewData["Title"] = "Ana Sayfa";
 }
 
-<!-- TempData'dan gelen mesajı gösterme -->
-@if (TempData["SuccessMessage"] != null)
-{
-        <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-        </div>
-}
+
 
 <!-- Giriş Yap veya Üye Ol Butonları -->
 <div class="text-center mb-4" id="authStatus">
@@ -20,18 +10,6 @@
     <p class="lead" id="authMessage"></p>
 </div>
 
-<!-- Admin'e Özel Buton -->
-@{
-    var role = TempData["Role"]?.ToString();  // TempData'dan admin rolünü alıyoruz
-}
-@if (role == "admin")
-{
-        <div class="text-center mb-4">
-            <button class="btn btn-danger" onclick="window.location.href='@Url.Action("Index", "Admin")'">
-                Admin Paneline Git
-            </button>
-        </div>
-}
 
 <!-- Sanat eserlerini listeleme -->
 @model IEnumerable<OnlineGallery.Models.Artwork>

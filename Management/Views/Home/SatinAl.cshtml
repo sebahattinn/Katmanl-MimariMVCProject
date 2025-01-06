@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
     <h2>@Model.Title</h2>
-    <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
+    <img src="~/@Model.ImageUrl" alt="@Model.Title" class="img-fluid mb-3" />
     <p><strong>Açıklama:</strong> @Model.Description</p>
     <p><strong>Fiyat:</strong> @(string.Format("{0:C}", Model.Price))</p> <!-- Format as currency -->
     <div class="mt-4">

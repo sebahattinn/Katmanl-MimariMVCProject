@@ -1,30 +1,12 @@
-﻿@{
-    Layout = TempData["Layout"] != null
-        ? TempData["Layout"].ToString()
-        : "~/Views/Shared/_Layout.cshtml";
-
-    ViewData["Title"] = "Admin Paneli - Kullanıcılar";
-}
-
-@model IEnumerable<OnlineGallery.Models.User>
+﻿@model IEnumerable<OnlineGallery.Models.User>
 
 <h2>@ViewData["Title"]</h2>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
 
-<div id="user-list-container">
-    @await Html.PartialAsync("UserList", Model)
-</div>
+
+
 
 <div class="mt-3">
-    <!-- Admin rolüne sahip kullanıcılar için buton ekleme -->
-    @if (User.IsInRole("Admin"))
-    {
         <div>
             <button id="add-user" class="btn btn-success">Kullanıcı Ekle</button>
         </div>
@@ -46,12 +28,6 @@
         <div>
             <button id="edit-artwork" class="btn btn-warning">Tablo Düzenle</button>
         </div>
-    }
-    <!-- Admin olmayan kullanıcılar için başka bir içerik ya da mesaj ekleyebilirsiniz -->
-    else
-    {
-    <p class="alert alert-info">Yalnızca adminler bu işlemleri yapabilir.</p>
-    }
 </div>
 
 <div id="add-user-form-container" style="display: none;">

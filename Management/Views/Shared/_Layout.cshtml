@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = ViewData["Title"] ?? "OnlineGallery"; // Varsayılan başlık
 }
 
@@ -57,7 +57,7 @@
     <div class="auth-buttons">
         <script type="text/javascript">
             // DOMContentLoaded olayıyla scripti başlat
-            document.addEventListener('DOMContentLoaded', func tion() {
+            document.addEventListener('DOMContentLoaded', function() {
                 // localStorage'dan authToken'ı kontrol et
                 var authToken = localStorage.getItem('authToken');
 
@@ -70,7 +70,7 @@
                             `;
 
                     // Çıkış yap butonuna tıklama olayını ekle
-                    document.getElementById('logoutForm').addEventListener('submit', func tion(event) {
+                    document.getElementById('logoutForm').addEventListener('submit', function(event) {
                         // localStorage'daki authToken'ı sil
                         localStorage.removeItem('authToken');
                     });
@@ -85,13 +85,6 @@
         </script>
     </div>
 
-    <!-- Admin Role için Buton -->
-    @if (User.IsInRole("admin"))
-    {
-        <div class="text-center mb-4">
-            <a href="@Url.Action("Index", "Admin")" class="btn btn-warning">Go to Panel</a>
-        </div>
-    }
 
     <!-- Navbar Bölümü -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

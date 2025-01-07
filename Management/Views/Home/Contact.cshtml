@@ -1,4 +1,5 @@
 ﻿@{
+    Layout = null;
     ViewData["Title"] = ViewData["Title"] ?? "OnlineGallery"; // Varsayılan başlık
 }
 
@@ -18,9 +19,28 @@
             height: 400px;
             width: 100%;
         }
+
+        /* Özelleştirilmiş Logo Alanı */
+        .custom-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+            .custom-logo img {
+                height: 50px;
+            }
     </style>
 </head>
 <body>
+    <!-- Logo Alanı -->
+    <div class="custom-logo">
+        <a href="/Home/Index">
+            <img src="/images/logo.png" alt="Logo">
+        </a>
+    </div>
+
     <div class="container mt-5">
         <h1 class="text-center">Bize Ulaşın</h1>
 

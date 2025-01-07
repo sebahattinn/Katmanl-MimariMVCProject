@@ -26,9 +26,39 @@
     </div>
 
     <div>
-        <input type="hidden" id="artworkTitle" value="@Model.Title" />
-        <button onclick=DeleteArtworkByTitle(@Model.Title) class="btn btn-danger">Sil</button>
+        <input type="hidden" id="artworkTitle" value="@Model?.Title ?? " " " />
+        <button id="delete-artwork-button" class="btn btn-danger">Sil</button>
         <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
     </div>
 </div>
 
+<script>
+    document.getElementById("delete-artwork-button").addEventListener("click", function () {
+        const title = document.getElementById("artworkTitle").value;
+
+        console.log("Artwork Title:", title); // Loglama ekleyin
+
+        if (!title) {
+            alert("Tablo adı boş olamaz!");
+            return;
+        }
+
+        fetch('@Url.Action("DeleteArtworkByTitle", "Admin")', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(title)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Sanat eseri başarıyla silindi!");
+                    window.location.href = '@Url.Action("Index", "Admin")';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+    });
+
+
+</script>

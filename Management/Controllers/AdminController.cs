@@ -282,29 +282,30 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteArtworkByTitle([FromBody] string title)
     {
-        // Log the title received
         Console.WriteLine($"Received title: {title}");
 
         if (string.IsNullOrEmpty(title))
         {
-            return Json(new { success = false, message = "Bu İsimde Bir Sanat Eseri Bulunamadı" });
+            Console.WriteLine("Error: Title is null or empty");
+            return Json(new { success = false, message = "Tablo adı boş olamaz." });
         }
 
-        // Perform a case-insensitive search for the artwork
         var artwork = await _context.Artworks
             .FirstOrDefaultAsync(a => a.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
 
         if (artwork == null)
         {
+            Console.WriteLine("Error: Artwork not found");
             return Json(new { success = false, message = "Sanat eseri bulunamadı." });
         }
 
-        // Log the artwork found
         Console.WriteLine($"Found artwork: {artwork.Title}");
-
         _context.Artworks.Remove(artwork);
         await _context.SaveChangesAsync();
+
         return Json(new { success = true });
     }
+
+
 
 }

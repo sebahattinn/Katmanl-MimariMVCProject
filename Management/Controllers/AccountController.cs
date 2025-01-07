@@ -81,10 +81,13 @@ public class AccountController : Controller
                     // Store token in TempData
                     TempData["AuthToken"] = token;
 
-                    if (user.Role == "Admin")
+                    // Admin kontrolü ve yönlendirme
+                    if (user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
                         return RedirectToAction("Index", "Admin");
                     }
+
+                    // Normal kullanıcı için yönlendirme
                     return RedirectToAction("Index", "Home");
                 }
                 else

@@ -18,7 +18,6 @@ public class AccountController : Controller
     {
         _context = context;
     }
- 
 
     [HttpGet]
     public IActionResult Register()
@@ -31,13 +30,20 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
+            // Admin rolünü doğrudan seçmeye çalışanları engelle
+            if (model.Role == "Admin")
+            {
+                ModelState.AddModelError(string.Empty, "Admin rolü doğrudan seçilemez!");
+                return View(model);
+            }
+
             var passwordHasher = new PasswordHasher<User>();
 
             var user = new User
             {
                 FullName = model.FullName,
                 Email = model.Email,
-                Role = model.Role
+                Role = model.Role ?? "User" // Varsayılan olarak "User" rolü atanır
             };
 
             user.PasswordHash = passwordHasher.HashPassword(user, model.Password);
@@ -45,7 +51,7 @@ public class AccountController : Controller
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Registration successful! You can now log in.";
+            TempData["SuccessMessage"] = "Kayıt işlemi başarılı! Giriş yapabilirsiniz.";
             return RedirectToAction("Login");
         }
         return View(model);
@@ -75,7 +81,7 @@ public class AccountController : Controller
                     // Store token in TempData
                     TempData["AuthToken"] = token;
 
-                    if (user.Role == "admin")
+                    if (user.Role == "Admin")
                     {
                         return RedirectToAction("Index", "Admin");
                     }
@@ -83,12 +89,12 @@ public class AccountController : Controller
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid password.");
+                    ModelState.AddModelError("", "Geçersiz şifre.");
                 }
             }
             else
             {
-                ModelState.AddModelError("", "User not found.");
+                ModelState.AddModelError("", "Kullanıcı bulunamadı.");
             }
         }
 
@@ -122,6 +128,4 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync();
         return RedirectToAction("Login", "Account");
     }
-
-
 }

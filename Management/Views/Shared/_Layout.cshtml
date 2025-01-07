@@ -57,34 +57,33 @@
     <div class="auth-buttons">
         <script type="text/javascript">
             // DOMContentLoaded olayıyla scripti başlat
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 // localStorage'dan authToken'ı kontrol et
                 var authToken = localStorage.getItem('authToken');
 
                 if (authToken) {
                     // Kullanıcı giriş yapmışsa, çıkış butonunu göster
                     document.querySelector('.auth-buttons').innerHTML = `
-                                <form method="post" action="@Url.Action("Logout", "Account")" style="display:inline;" id="logoutForm">
-                                    <button type="submit" class="btn btn-outline-danger">Çıkış Yap</button>
-                                </form>
-                            `;
+                                            <form method="post" action="@Url.Action("Logout", "Account")" style="display:inline;" id="logoutForm">
+                                                <button type="submit" class="btn btn-outline-danger">Çıkış Yap</button>
+                                            </form>
+                                        `;
 
                     // Çıkış yap butonuna tıklama olayını ekle
-                    document.getElementById('logoutForm').addEventListener('submit', function(event) {
+                    document.getElementById('logoutForm').addEventListener('submit', function (event) {
                         // localStorage'daki authToken'ı sil
                         localStorage.removeItem('authToken');
                     });
                 } else {
                     // Kullanıcı giriş yapmamışsa, giriş yap ve kayıt ol butonlarını göster
                     document.querySelector('.auth-buttons').innerHTML = `
-                                <a class="btn btn-outline-primary me-2" href="@Url.Action("Login", "Account")">Giriş Yap</a>
-                                <a class="btn btn-outline-success" href="@Url.Action("Register", "Account")">Kayıt Ol</a>
-                            `;
+                                            <a class="btn btn-outline-primary me-2" href="@Url.Action("Login", "Account")">Giriş Yap</a>
+                                            <a class="btn btn-outline-success" href="@Url.Action("Register", "Account")">Kayıt Ol</a>
+                                        `;
                 }
             });
         </script>
     </div>
-
 
     <!-- Navbar Bölümü -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

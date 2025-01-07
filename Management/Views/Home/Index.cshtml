@@ -60,7 +60,7 @@ else
                 if (authToken) {
                     localStorage.setItem('authToken', authToken);
                     console.log(authToken, "aynen");
-                    document.getElementById('authMessage').innerHTML = 'Zaten giriş yaptınız. <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a>';
+                   
                 } else {
                     document.getElementById('authMessage').innerHTML = 'Hesabınız yok mu? <a href="@Url.Action("Register", "Account")">Kayıt Ol</a> veya <a href="@Url.Action("Login", "Account")">Giriş Yap</a>';
                 }

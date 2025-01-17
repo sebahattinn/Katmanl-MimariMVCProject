@@ -81,12 +81,12 @@
             </text>
         }
 
-            function hideAllForms() {
-                document.getElementById('add-user-form-container').style.display = 'none';
-                document.getElementById('add-artwork-form-container').style.display = 'none';
-                document.getElementById('delete-artwork-form-container').style.display = 'none';
-                document.getElementById('edit-artwork-form-container').style.display = 'none';
-            }
+        function hideAllForms() {
+            document.getElementById('add-user-form-container').style.display = 'none';
+            document.getElementById('add-artwork-form-container').style.display = 'none';
+            document.getElementById('delete-artwork-form-container').style.display = 'none';
+            document.getElementById('edit-artwork-form-container').style.display = 'none';
+        }
 
         document.getElementById('load-user-list').addEventListener('click', function () {
             fetch('@Url.Action("GetUserList", "Admin")')

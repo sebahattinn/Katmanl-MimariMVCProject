@@ -14,5 +14,9 @@ Veritabanı yönetimi için kullanılır.
 
 Bootstrap:
 Responsive ve modern tasarımlar oluşturmak için kullanılır.
+
+
+
+
 ![Bootstrap_logo.svg](https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg)
 

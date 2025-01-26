@@ -1,7 +1,5 @@
-Katmanlı Mimari MVC Projesi
 
-Proje Açıklaması
-Bu proje, ASP.NET Core MVC kullanarak katmanlı mimari prensiplerine göre geliştirilmiş bir web uygulamasıdır.
+ ASP.NET Core MVC kullanarak katmanlı mimari prensiplerine göre geliştirilmiş bir web uygulamasıdır.
 
 
 

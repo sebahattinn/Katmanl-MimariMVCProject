@@ -26,7 +26,8 @@
     </div>
 
     <div>
-        <input type="hidden" id="artworkTitle" value="@Model?.Title ?? " " " />
+        <!-- ID'yi gizli alıyoruz -->
+        <input type="hidden" id="artworkId" value="@Model?.ArtworkId ?? 0" />
         <button id="delete-artwork-button" class="btn btn-danger">Sil</button>
         <a href="javascript:history.back()" class="btn btn-secondary">İptal</a>
     </div>
@@ -34,19 +35,19 @@
 
 <script>
     document.getElementById("delete-artwork-button").addEventListener("click", function () {
-        const title = document.getElementById("artworkTitle").value;
+        const id = document.getElementById("artworkId").value;
 
-        console.log("Artwork Title:", title); // Loglama ekleyin
+        console.log("Artwork ID:", id); // Loglama ekleyin
 
-        if (!title) {
-            alert("Tablo adı boş olamaz!");
+        if (!id) {
+            alert("Geçersiz ID!");
             return;
         }
 
-        fetch('@Url.Action("DeleteArtworkByTitle", "Admin")', {
+        fetch('@Url.Action("DeleteArtworkById", "Admin")', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(title)
+            body: JSON.stringify(id)
         })
             .then(response => response.json())
             .then(data => {
@@ -59,6 +60,4 @@
             })
             .catch(error => console.error("Error:", error));
     });
-
-
 </script>

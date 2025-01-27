@@ -5,7 +5,7 @@
 
 - **ASP.NET Core MVC**:  
   Modern, yüksek performanslı web uygulamaları geliştirmek için Microsoft'un sunduğu framework.  
-  <img src="assets/ASP.NET CORE MVC" alt="ASP.NET Core MVC Logosu" width="100" />
+  <img src="assets/ASP.NET CORE MVC.png" alt="ASP.NET Core MVC Logosu" width="100" />
 
 - **Entity Framework Core**:  
   .NET platformu için hafif ve genişletilebilir bir nesne-ilişkisel eşleme (ORM) aracı.  

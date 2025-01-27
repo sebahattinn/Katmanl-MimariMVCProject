@@ -1,0 +1,46 @@
+﻿@model IEnumerable<OnlineGallery.Models.Artwork>
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().ArtworkId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Title)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Price)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CategoryId)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ImageUrl)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var artwork in Model)
+            {
+                <tr>
+                    <td>@artwork?.ArtworkId</td>
+                    <td>@artwork?.Title</td>
+                    <td>@artwork?.Description</td>
+                    <td>@artwork?.Price</td>
+                    <td>@artwork?.CategoryId</td>
+                    <td>@artwork?.ImageUrl</td>
+                    <td>            
+                    </td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found.</p>
+}

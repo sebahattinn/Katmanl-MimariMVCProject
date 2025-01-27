@@ -1,4 +1,5 @@
-﻿ using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +19,6 @@ public class AdminController : Controller
         _context = context;
     }
 
-    // Index Action
     public IActionResult Index()
     {
         return View();
@@ -28,13 +28,25 @@ public class AdminController : Controller
     public async Task<IActionResult> Users()
     {
         var users = await _context.Users.ToListAsync();
-        return View(users);
+        return View(users); // Kullanıcıları listelemek için tam görünüm.
     }
 
     public async Task<IActionResult> GetUserList()
     {
         var users = await _context.Users.ToListAsync();
-        return PartialView("UserList", users);
+        return PartialView("UserList", users); // PartialView adı kontrol edilmeli.
+    }
+
+    public async Task<IActionResult> Tables()
+    {
+        var Artwork = await _context.Artworks.ToListAsync(); // Tablo verisi için doğru model kontrol edilmeli.
+        return View(Artwork); // Tablo listeleme için tam görünüm.
+    }
+
+    public async Task<IActionResult> GetUserTable()
+    {
+        var tables = await _context.Artworks.ToListAsync(); // Tablo verisi doğru modelden alınmalı.
+        return PartialView("TableList", tables); // PartialView adı kontrol edilmeli.
     }
 
     // Edit User Action
@@ -172,7 +184,7 @@ public class AdminController : Controller
     public async Task<IActionResult> AddArtwork(Artwork artwork)
     {
         var categories = await _context.Categories.ToListAsync();
-        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");  //Bir ister burada karşılanıyor.
+        ViewBag.Categories = new SelectList(categories, "CategoryId", "Name");
 
         if (!ModelState.IsValid)
         {
@@ -211,13 +223,11 @@ public class AdminController : Controller
     }
 
     // Edit Artwork by Title Action
-  //  [Authorize(Roles = "admin")]
     public async Task<IActionResult> EditArtworkByTitle(string title)
     {
         var artwork = await _context.Artworks.FirstOrDefaultAsync(a => a.Title == title);
         if (artwork == null)
         {
-            
             TempData["ErrorMessage"] = "Sanat eseri bulunamadı!";
             return PartialView("EditArtworkPartialView", artwork);
         }
@@ -280,26 +290,20 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> DeleteArtworkByTitle([FromBody] string title)
+    public async Task<IActionResult> DeleteArtworkById([FromBody] int id)
     {
-        Console.WriteLine($"Received title: {title}");
-
-        if (string.IsNullOrEmpty(title))
+        if (id == 0)
         {
-            Console.WriteLine("Error: Title is null or empty");
-            return Json(new { success = false, message = "Tablo adı boş olamaz." });
+            return Json(new { success = false, message = "Geçersiz ID!" });
         }
 
-        var artwork = await _context.Artworks
-            .FirstOrDefaultAsync(a => a.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+        var artwork = await _context.Artworks.FindAsync(id);
 
         if (artwork == null)
         {
-            Console.WriteLine("Error: Artwork not found");
             return Json(new { success = false, message = "Sanat eseri bulunamadı." });
         }
 
-        Console.WriteLine($"Found artwork: {artwork.Title}");
         _context.Artworks.Remove(artwork);
         await _context.SaveChangesAsync();
 
@@ -308,4 +312,22 @@ public class AdminController : Controller
 
 
 
+    // Logout Action
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        try
+        {
+            await _context.SaveChangesAsync(); // Değişikliklerin kaydedildiğinden emin olun
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme); // Çıkış işlemi
+            TempData["SuccessMessage"] = "Başarıyla çıkış yapıldı."; // Çıkış mesajı
+            return RedirectToAction("Login", "Account"); // Login sayfasına yönlendir
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Bir hata oluştu: {ex.Message}"; // Hata mesajı
+            return RedirectToAction("Index", "Admin"); // Hata durumunda Admin sayfasına geri dön
+        }
+    }
 }
